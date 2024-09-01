@@ -1,0 +1,26 @@
+.crimewatch {
+    position: absolute;
+    top: 146px;
+    left: calc(50% - 178px);
+    font-size: 64px;
+    text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+}
+.welcomeBackVigilante101Container {
+    position: absolute;
+    top: calc(50% - 170px);
+    left: calc(50% - 223px);
+    color: #fff;
+    text-align: center;
+}
+.main {
+    width: 100%;
+    position: relative;
+    background: linear-gradient(180deg, #000a1a, #001f3f 80.5%);
+    height: 1024px;
+    overflow: hidden;
+    text-align: left;
+    font-size: 32px;
+    color: #149414;
+    font-family: 'M PLUS 1';
+}
+

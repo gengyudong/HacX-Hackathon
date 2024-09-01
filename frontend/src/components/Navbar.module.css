@@ -1,0 +1,48 @@
+    .navbar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 20px; /* Adjust padding for spacing */
+        display: flex; /* Use flexbox for horizontal alignment */
+        align-items: center; /* Center items vertically */
+        justify-content: space-around; /* Space items evenly */
+        z-index: 1000; /* Ensure the navbar stays on top of other content */
+        font-size: 24px;
+        color: #149414 !important;
+        font-family: 'M PLUS 1';
+    }
+    .home {
+        cursor: pointer;
+        text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+        padding: 20px 0px;
+    }
+    .home:hover, .scraper:hover, .scraperWebsite:hover, .photo:hover, .audio:hover, .settings:hover {
+        text-decoration: underline;
+        font-size: 30px;
+    }
+    .scraperWebsite {
+        display: flex;
+        flex-direction: column;
+        text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+        cursor: pointer;
+        padding: 20px 0px;
+      }
+    .scraper {
+        margin: 0;
+    }    
+    .photo {
+        cursor: pointer;
+        text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+        padding: 20px 0px;
+    }
+    .audio {
+        cursor: pointer;
+        text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+        padding: 20px 0px;
+    }
+    .settings {
+        cursor: pointer;
+        text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+        padding: 20px 0px;
+    }

@@ -1,0 +1,108 @@
+.crimewatch {
+    position: absolute;
+    top: 60px;
+    left: calc(50% - 178px);
+    font-size: 64px;
+    text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+}
+.photo1 {
+    position: absolute;
+    top: 898px;
+    left: calc(50% - 45px);
+    text-decoration: underline;
+    text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
+}
+.photoChecker {
+    position: absolute;
+    top: calc(50% - 302px);
+    left: calc(50% - 110px);
+    color: #fff;
+    text-align: center;
+}
+.checkIfThe {
+    position: absolute;
+    top: calc(50% - 242px);
+    left: calc(50% - 165px);
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+}
+.photoChild {
+    position: absolute;
+    top: 350px;
+    left: 590px;
+    border-radius: 10px;
+    background-color: #fff;
+    width: 180px;
+    height: 30px;
+}
+.groupChild {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-radius: 10px;
+    background-color: #fff;
+    width: 60px;
+    height: 30px;
+}
+.upload {
+    position: absolute;
+    top: 5px;
+    left: 7px;
+}
+.rectangleParent {
+    position: absolute;
+    top: 350px;
+    left: 790px;
+    width: 60px;
+    height: 30px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+}
+.skibidiToiletjpg {
+    position: absolute;
+    top: 355px;
+    left: 623px;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+}
+.photoItem {
+    position: absolute;
+    top: 400px;
+    left: calc(50% - 165px);
+    border-radius: 20px;
+    width: 330px;
+    height: 330px;
+    object-fit: cover;
+}
+.thisImageContains {
+    margin-bottom: 0px;
+}
+.thisImageContainsAiGenerat {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    padding-left: 19px;
+}
+.postPreliminaryChecksThisContainer {
+    position: absolute;
+    top: 746px;
+    left: calc(50% - 154px);
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+}
+.photo {
+    width: 100%;
+    position: relative;
+    background: linear-gradient(180deg, #000a1a, #001f3f 80.5%);
+    height: 1024px;
+    overflow: hidden;
+    text-align: left;
+    font-size: 32px;
+    color: #149414;
+    font-family: 'M PLUS 1';
+}
+
