@@ -17,7 +17,7 @@
 }
 .keywords {
     position: absolute;
-    top: calc(50% - 118px);
+    top: calc(50% - 50px);
     left: calc(50% - 424px);
     font-size: 24px;
     color: #fff;
