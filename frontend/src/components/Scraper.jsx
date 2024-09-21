@@ -6,20 +6,45 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const Scraper = () => {
   const [value, setValue] = useState(''); // State to hold the input value
+//   const [postDetails, setPostDetails] = useState(null); // State to hold the response data
 
   const handleInputChange = (event) => {
     setValue(event.target.value); // Update state with input value
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
-    alert(`You entered: ${value}`); // Show the input value
-    setValue(''); // Clear the input field
-  };
-
-  const changeStyle = (event) => {
-    event.target.style.backgroundColor = 'lightblue'; // Change background on hover
-  };
+  
+    if (!value.trim()) {
+      alert('Please enter a value.'); // Basic validation
+      return;
+    }
+  
+    try {
+      // Update the URL to your backend endpoint
+      const response = await fetch('http://localhost:3001/skibidi', { // Change to your backend API URL
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ post_url : value }), // Send the input value
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok'); // Handle errors
+      }
+      // Optional: Get the response data if needed
+      const data = await response.json();
+      console.log('Post details:', data);
+    //   setPostDetails(data); // Update the state with the response data
+      
+      // Clear the input field after successful submission
+      setValue(''); 
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while submitting your data.'); // Error message
+    }
+  };  
 
   return (
     <div className={styles.scraper}>
@@ -34,13 +59,25 @@ const Scraper = () => {
                 <TextInput value={value} onChange={handleInputChange} />
                 <Button
                   type="submit"
-                  onMouseEnter={changeStyle}
-                  onMouseLeave={(event) => (event.target.style.backgroundColor = 'white')}
                   style={{ marginLeft: '10px', marginBottom: '10px' }}
                 >
                   Submit
                 </Button>
               </form>
+                {/* {postDetails && (
+                    <div className="mt-4">
+                    <h4>Post Details</h4>
+                    <p>Title: {postDetails.post_title}</p>
+                    <p>Author: {postDetails.user_name}</p>
+                    <a href={postDetails.user_profile_link} target="_blank" rel="noopener noreferrer"> View Profile</a>
+                    <h4>Content:</h4> 
+                    <ul> 
+                        {postDetails.paragraph_texts.map((para, index) => ( 
+                        <li key={index}>{para}</li> 
+                        ))} 
+                    </ul> 
+                    </div>
+                )} */}
             </div>
           </Col>
         </Row>
