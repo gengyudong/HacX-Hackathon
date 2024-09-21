@@ -14,7 +14,7 @@ const Navbar = () => {
       </div>
       <div className={styles.photo} onClick= {() => navigate('/photo')}>photo</div>
       <div className={styles.audio} onClick={() => navigate('/audio')}>audio</div>
-      <div className={styles.settings} onClick={() => navigate('/logout')}>logout</div>
+      <div className={styles.settings} onClick={() => navigate('/')}>logout</div>
     </div>
   );
 };
