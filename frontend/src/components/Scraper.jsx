@@ -6,7 +6,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const Scraper = () => {
   const [value, setValue] = useState(''); // State to hold the input value
-//   const [postDetails, setPostDetails] = useState(null); // State to hold the response data
+  const [postDetails, setPostDetails] = useState(null); // State to hold the response data
 
   const handleInputChange = (event) => {
     setValue(event.target.value); // Update state with input value
@@ -22,7 +22,7 @@ const Scraper = () => {
   
     try {
       // Update the URL to your backend endpoint
-      const response = await fetch('http://localhost:3001/skibidi', { // Change to your backend API URL
+      const response = await fetch('http://localhost:3001/scrape', { // Change to your backend API URL
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ const Scraper = () => {
       // Optional: Get the response data if needed
       const data = await response.json();
       console.log('Post details:', data);
-    //   setPostDetails(data); // Update the state with the response data
+      setPostDetails(data); // Update the state with the response data
       
       // Clear the input field after successful submission
       setValue(''); 
@@ -64,7 +64,7 @@ const Scraper = () => {
                   Submit
                 </Button>
               </form>
-                {/* {postDetails && (
+                {postDetails && (
                     <div className="mt-4">
                     <h4>Post Details</h4>
                     <p>Title: {postDetails.post_title}</p>
@@ -77,7 +77,7 @@ const Scraper = () => {
                         ))} 
                     </ul> 
                     </div>
-                )} */}
+                )}
             </div>
           </Col>
         </Row>

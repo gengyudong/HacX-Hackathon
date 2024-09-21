@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const OpenAIHelper = require('./openai/OpenAIHelper');
+const fetchRedditPostDetails = require('./functions/redditscrape');
 require('dotenv').config();
 
 const app = express();
@@ -10,19 +11,35 @@ app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
 const openAIHelper = new OpenAIHelper();
 
-app.post('/skibidi', (req, res) => {
-  const inputValue = req.body.post_url; // Get the input value from the request body
-  console.log('Received post_url:', inputValue);
+// app.post('/skibidi', (req, res) => {
+//   const inputValue = req.body.post_url; // Get the input value from the request body
+//   console.log('Received post_url:', inputValue);
 
-  if (!inputValue) {
-    return res.status(400).json({ error: 'post_url is required' });
+//   if (!inputValue) {
+//     return res.status(400).json({ error: 'post_url is required' });
+//   }
+
+//   // Here you can process the input value (e.g., save to a database)
+//   console.log('Input received successfully:', inputValue);
+
+//   // Respond to the client
+//   res.status(200).json({ message: 'Input received successfully!' });
+// });
+
+app.post('/scrape', async (req, res) => {
+  const { post_url } = req.body;
+
+  if (!post_url) {
+      return res.status(400).json({ error: 'No post URL provided' });
   }
 
-  // Here you can process the input value (e.g., save to a database)
-  console.log('Input received successfully:', inputValue);
+  const postDetails = await fetchRedditPostDetails(post_url);
 
-  // Respond to the client
-  res.status(200).json({ message: 'Input received successfully!' });
+  if (!postDetails) {
+      return res.status(500).json({ error: 'Failed to scrape the post' });
+  }
+
+  res.json(postDetails);
 });
 
 // Endpoint to handle image analysis requests
