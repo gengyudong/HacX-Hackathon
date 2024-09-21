@@ -2,7 +2,7 @@ import React from 'react';
 
 const TextInput = ({ value, onChange }) => {
   return (
-    <div style={{ padding: '20px' }}>
+    <div>
       <label>
         <input
           type="text"
@@ -12,7 +12,9 @@ const TextInput = ({ value, onChange }) => {
           style={{ padding: '5px', width: '350px', borderRadius: '10px', border: '1px solid #ccc', textAlign: "center"}}
         />
       </label>
-      <p style={{ marginTop: '10px', fontSize: '16px' }}>{value}</p>
+      <div style={{ marginTop: '10px', marginBottom: '10px', fontSize: '16px' }}>
+        <a href={value} target="_blank" rel="noopener noreferrer">{value}</a>
+      </div>
     </div>
   );
 };

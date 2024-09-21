@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 const ImageDescription = () => {
   const [imageUrl, setImageUrl] = useState('');
@@ -30,10 +30,7 @@ const ImageDescription = () => {
   };
 
   return (
-    <Container fluid className="d-flex justify-content-center align-items-center" style={{ height: '100vh'}}>
-    <Row className="w-100">
-    <Col xs={12} md={6} lg={4} className="mx-auto">
-        <div className="text-center p-4" style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '50px' }}>
+    <div style={{ display: 'grid', placeItems: 'center'}}>
         <h1>Image Description Generator</h1>
         <form onSubmit={handleSubmit}>
             <input
@@ -45,24 +42,21 @@ const ImageDescription = () => {
             />
             <Button
                 type="submit"
-                style={{ marginLeft: '10px', marginBottom: '10px' }}
+                style={{ marginLeft: '10px', marginBottom: '30px'}}
             >
                 Submit
             </Button>  
         </form>
 
       {description && (
-        <div>
+        <div style={{ display: 'grid', placeItems: 'center'}}>
+          <img src={imageUrl} alt={description} style={{ width: '300px', height: '300px', objectFit: 'cover', borderRadius: '5%' }} />
           <h2>Description:</h2>
-          <img src={imageUrl} alt="Image" style={{ width: '300px', height: '300px', objectFit: 'cover' }} />
           <p>{description}</p>
         </div>
       )}
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>    
-    </Col>
-    </Row>
-    </Container>
   );
 };
 

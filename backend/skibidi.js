@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const OpenAIHelper = require('./openai/OpenAIHelper');
 const fetchRedditPostDetails = require('./functions/redditscrape');
+const fetchSearchResults = require('./functions/googlesearch');
 require('dotenv').config();
 
 const app = express();
@@ -39,7 +40,15 @@ app.post('/scrape', async (req, res) => {
       return res.status(500).json({ error: 'Failed to scrape the post' });
   }
 
-  res.json(postDetails);
+  const searchQuery = `${postDetails.post_title}`;
+  const searchResults = await fetchSearchResults(searchQuery);
+  const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
+    title: result.title,
+    link: result.link,
+  }));
+  const result = { postDetails, similarResults };
+  console.log('Post details:', result);
+  res.json(result);
 });
 
 // Endpoint to handle image analysis requests

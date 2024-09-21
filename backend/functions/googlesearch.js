@@ -1,20 +1,36 @@
 const { getJson } = require("serpapi");
 require('dotenv').config();
 
-var query = "fake news pritam singh"
+// const query = "fake news pritam singh";
 
-getJson({
-    api_key: process.env.GOOGLE_API_KEY,
-    engine: "google",
-    q: query,
-    location: "Singapore",
-    google_domain: "google.com",
-    gl: "us",
-    hl: "en"
-}, (json) => {
-    console.log(json.organic_results.slice(0, 5)); 
-    // Organic results refer to just the articles/ videos from the google search 
-    // (excludes things like google maps, recommmended commercial products). 
-    // Sliced to display top 5 results but can be changed. 
-    // Can console log json to see the whole thing. 100 free calls per month I used 3 alr
-});
+async function fetchSearchResults(query) {
+  return new Promise((resolve, reject) => {
+    getJson({
+      api_key: process.env.GOOGLE_API_KEY,
+      engine: "google",
+      q: query,
+      location: "Singapore",
+      google_domain: "google.com",
+      gl: "us",
+      hl: "en"
+    }, (json) => {
+      if (json.error) {
+        reject(json.error);
+      } else {
+        resolve(json);
+      }
+    });
+  });
+}
+
+// Call the function and log the results
+// fetchSearchResults()
+//   .then(json => {
+//     console.log(json.organic_results.slice(0, 5));
+//   })
+//   .catch(error => {
+//     console.error('Error fetching search results:', error);
+//   });
+
+module.exports = fetchSearchResults;
+
