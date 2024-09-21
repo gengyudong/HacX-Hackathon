@@ -1,30 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@500&display=swap');
 .crimewatch {
-    position: absolute;
+    /* position: absolute;
     top: 87px;
-    left: calc(50% - 178px);
+    left: calc(50% - 178px); */
     font-size: 64px;
     color: #149414;
-    text-align: left;
+    /* text-align: left; */
     text-shadow: 1px 0 0 rgba(13, 243, 13, 0.85), 0 1px 0 rgba(13, 243, 13, 0.85), -1px 0 0 rgba(13, 243, 13, 0.85), 0 -1px 0 rgba(13, 243, 13, 0.85);
 }
 .whichWebsiteWould {
-    position: absolute;
+    /* position: absolute;
     top: calc(50% - 225px);
-    left: calc(50% - 592px);
+    left: calc(50% - 592px); */
     font-size: 24px;
     color: #fff;
 }
 .keywords {
-    position: absolute;
+    /* position: absolute;
     top: calc(50% - 50px);
-    left: calc(50% - 424px);
+    left: calc(50% - 424px); */
     font-size: 24px;
     color: #fff;
 }
 .scraper {
     width: 100%;
-    position: relative;
+    /* position: relative; */
     background: linear-gradient(180deg, #000a1a, #001f3f 80.5%);
     height: 1024px;
     overflow: hidden;
