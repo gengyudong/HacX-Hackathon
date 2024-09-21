@@ -19,6 +19,7 @@ const ImageDescription = () => {
       const response = await axios.post('http://localhost:3001/describe-image', {
         image_url: imageUrl,
       });
+       // Clear the input field after successful submission
       console.log('Response:', response);
       setDescription(response.data.descriptionOfAnalysis); // Assuming the response has a "results" field
       setError(''); // Clear any previous errors
