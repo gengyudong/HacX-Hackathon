@@ -21,7 +21,7 @@ const ImageDescription = () => {
       });
        // Clear the input field after successful submission
       console.log('Response:', response);
-      setDescription(response.data.descriptionOfAnalysis); // Assuming the response has a "results" field
+      setDescription(response.data.disinformationResult); // Assuming the response has a "results" field
       setError(''); // Clear any previous errors
     } catch (err) {
       console.error('Error:', err);
@@ -50,8 +50,8 @@ const ImageDescription = () => {
 
       {description && (
         <div style={{ display: 'grid', placeItems: 'center'}}>
-          <img src={imageUrl} alt={description} style={{ width: '300px', height: '300px', objectFit: 'cover', borderRadius: '5%' }} />
-          <h2>Description:</h2>
+          <img src={imageUrl} alt={description} style={{ width: '300px', height: 'auto', objectFit: 'cover', borderRadius: '5%' }} />
+          <h2>Conclusion:</h2>
           <p>{description}</p>
         </div>
       )}

@@ -53,7 +53,7 @@ const Scraper = () => {
       <Container fluid className="d-flex justify-content-center align-items-center" style={{ height: '100vh', paddingTop: '50px' }}>
         <Row className="w-100">
           <Col xs={12} md={6} lg={4} className="mx-auto">
-            <div className="text-center p-4" style={{ border: '1px solid #ccc', borderRadius: '8px' }}>
+            <div className="text-center p-4" style={{ border: '1px solid #ccc', borderRadius: '8px', overflowY: 'auto' }}>
               <h3 className={styles.whichWebsiteWould}>Which website would you like to check?</h3>
               <form onSubmit={handleSubmit}>
                 <TextInput value={value} onChange={handleInputChange} />
@@ -70,6 +70,7 @@ const Scraper = () => {
                     <p>Title: {postDetails.postDetails.post_title}</p>
                     <p>Author: {postDetails.postDetails.user_name}</p>
                     <a href={postDetails.postDetails.user_profile_link} target="_blank" rel="noopener noreferrer"> View Profile</a>
+                    <div style={{ maxHeight: '300px'}}>
                     <h4>Content:</h4> 
                     <ul> 
                         {postDetails.postDetails.paragraph_texts.map((para, index) => ( 
@@ -79,7 +80,7 @@ const Scraper = () => {
                     <h4>Disinformation Result:</h4>
                     <p>{postDetails.jsonDisinformation.disinformationResult}</p>
                     <h4>Possibly Related Posts:</h4>
-                    <ul>
+                    <ul style={{ paddingBottom: '20px'}}>
                       {postDetails.similarResults.map((post, index) => (
                         <li key={index}>
                           {post.link ? (
@@ -92,6 +93,7 @@ const Scraper = () => {
                         </li>
                       ))}
                     </ul>
+                    </div>
                     </div>
                 )}
             </div>
