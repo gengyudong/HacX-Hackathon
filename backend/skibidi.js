@@ -31,8 +31,14 @@ app.post('/scrape', async (req, res) => {
   const searchQuery = `${postDetails.post_title} ${postDetails.paragraph_texts.join(' ')}`;
   const searchResults = await fetchSearchResults(searchQueryGoogle);
   const assertionResult = await assertionExtractor(searchQuery);
-  const parsedAssertion = openAIHelper.parseChatGPTJSONString(assertionResult);
-  const disinformationResult = await disinformationDetector(disinformationSearch);
+  const cleanAssertion = openAIHelper.cleanChatGPTJSONString(assertionResult);   
+  const parsedAssertion = openAIHelper.parseChatGPTJSONString(cleanAssertion);
+
+  const disinformationResult = await disinformationDetector(parsedAssertion);
+  const jsonData = JSON.stringify(disinformationResult, null, 2);
+  const jsonDisinformation = JSON.parse(jsonData);
+
+  // const parsedAssertion = openAIHelper.parseChatGPTJSONString(assertionResult);
 
   // const disinformationSearch = `${parsedAssertion.assertion} Can you provide a long and clear assessment of its truthfulness and if it contains fake news and spreads disinformation?`;
   // const disinformationResult = await disinformationDetector(disinformationSearch);
@@ -40,12 +46,13 @@ app.post('/scrape', async (req, res) => {
   // const cleanString = escapedResult.replace(/[\u0000-\u001F\u007F-\u009F]/g, ' '); 
   // const jsonString = `{"disinformationResult": "${cleanString}"}`; // Example JSON string
   // const jsonDisinformation = JSON.parse(jsonString);
-  // const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
-  //   title: result.title,
-  //   link: result.link,
-  // }));
-  // const result = { postDetails, similarResults, jsonDisinformation };
-  // res.json(result);
+  const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
+    title: result.title,
+    link: result.link,
+  }));
+  
+  const result = { postDetails, similarResults, jsonDisinformation };
+  res.status(200).json(result);
 });
 
 // Endpoint to handle image analysis requests

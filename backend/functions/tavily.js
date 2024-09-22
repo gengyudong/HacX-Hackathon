@@ -2,8 +2,8 @@ const axios = require("axios");
 const { parse } = require("tldts");
 require('dotenv').config();
 
-const tavily_endpoint = process.env["TAVILY_ENDPOINT"];
-const tavily_apikey = process.env["TAVILY_API_KEY"];
+const tavilyEndpoint = process.env["TAVILY_ENDPOINT"];
+const tavilyApikey = process.env["TAVILY_API_KEY"];
 
 // Disinformation detection function (Tavily AI)
 async function disinformationDetector(query) {
@@ -13,8 +13,8 @@ async function disinformationDetector(query) {
         for (const [key, value] of Object.entries(query)) {
             let assertion = `For the assertion below, do the following: \n1. State if the assertion is true or false. \n2. Explain your reasoning, include quotes from the sources that you reference from.\n\nAssertion: ${value}`;
 
-            let decision = await axios.post(tavily_endpoint_1, {
-                "api_key": tavily_apikey_1,
+            let decision = await axios.post(tavilyEndpoint, {
+                "api_key": tavilyApikey,
                 "query": assertion,
                 "search_depth": "basic",
                 "topic": "general",

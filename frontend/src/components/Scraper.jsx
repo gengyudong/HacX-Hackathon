@@ -78,7 +78,12 @@ const Scraper = () => {
                         ))} 
                     </ul> 
                     <h4>Disinformation Result:</h4>
-                    <p>{postDetails.jsonDisinformation.disinformationResult}</p>
+                        {postDetails.jsonDisinformation.map((para, index) => ( 
+                        <div key={index}>
+                        <p>Assertion {index+1}: {para.assertion}</p> 
+                        <p>{para.factCheck}</p> 
+                        </div>
+                      ))}               
                     <h4>Possibly Related Posts:</h4>
                     <ul style={{ paddingBottom: '20px'}}>
                       {postDetails.similarResults.map((post, index) => (
