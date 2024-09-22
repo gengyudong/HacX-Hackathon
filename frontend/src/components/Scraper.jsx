@@ -76,6 +76,8 @@ const Scraper = () => {
                         <li key={index}>{para}</li> 
                         ))} 
                     </ul> 
+                    <h4>Disinformation Result:</h4>
+                    <p>{postDetails.jsonDisinformation.disinformationResult}</p>
                     <h4>Possibly Related Posts:</h4>
                     <ul>
                       {postDetails.similarResults.map((post, index) => (

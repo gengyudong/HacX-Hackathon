@@ -4,6 +4,8 @@ const cors = require('cors');
 const OpenAIHelper = require('./openai/OpenAIHelper');
 const fetchRedditPostDetails = require('./functions/redditscrape');
 const fetchSearchResults = require('./functions/googlesearch');
+const assertionExtractor = require('./functions/azure');
+const disinformationDetector = require('./functions/tavily');
 require('dotenv').config();
 
 const app = express();
@@ -40,14 +42,22 @@ app.post('/scrape', async (req, res) => {
       return res.status(500).json({ error: 'Failed to scrape the post' });
   }
 
-  const searchQuery = `${postDetails.post_title}`;
-  const searchResults = await fetchSearchResults(searchQuery);
+  const searchQueryGoogle = `${postDetails.post_title}`;
+  const searchQuery = `${postDetails.post_title} ${postDetails.paragraph_texts.join(' ')}`;
+  const searchResults = await fetchSearchResults(searchQueryGoogle);
+
+  const assertionResult = await assertionExtractor(searchQuery);
+  const parsedAssertion = openAIHelper.parseChatGPTJSONString(assertionResult);
+  const disinformationSearch = `${parsedAssertion.assertion} Can you provide an assessment of its truthfulness and if it contains fake news and spreads disinformation?`;
+  const disinformationResult = await disinformationDetector(disinformationSearch);
+
+  const jsonString = `{"disinformationResult": "${disinformationResult}"}`; // Example JSON string
+  const jsonDisinformation = JSON.parse(jsonString);
   const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
     title: result.title,
     link: result.link,
   }));
-  const result = { postDetails, similarResults };
-  console.log('Post details:', result);
+  const result = { postDetails, similarResults, jsonDisinformation };
   res.json(result);
 });
 
