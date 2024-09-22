@@ -1,8 +1,5 @@
 const { AzureOpenAI } = require("openai");
-// Load the .env file for API details
-const dotenv = require("dotenv");
 require('dotenv').config();
-dotenv.config();
 
 // Load API details for Azure OpenAI
 const openai_endpoint = process.env["AZURE_OPENAI_ENDPOINT"];
@@ -37,7 +34,6 @@ async function assertionExtractor(prompt) {
             ],
             model: "",
         });
-
         const response = result.choices.map(choice => choice.message.content).join('\n');
         return response;
     } catch(error) {
