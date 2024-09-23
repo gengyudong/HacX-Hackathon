@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 
 const EmptyAnalysis = () => {
   return (
-    <Box xs={{ display: "flex", margin: "auto" }}>
+    <Box xs={{ display: "relative", margin: "auto" }}>
       <Typography variant="h3">No Result</Typography>
     </Box>
   );

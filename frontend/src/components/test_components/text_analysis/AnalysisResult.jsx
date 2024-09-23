@@ -51,16 +51,11 @@ function AssertionRow(props) {
 
 export default function AnalysisResult(result) {
 
-    const [open, setOpen] = React.useState(true);
-
     const postDetails = [
-        {
-        Title: "Geng Yu Dong is Gay",
-        Platform: "VS Code",
-        Author: "Mr Guo",
-        DatePosted: "22-09-2024",
-        SourceLink: "www.link.com",
-        },
+      {
+        Title: "Post Title",
+        Platform: "Platform",
+      }
     ];
 
     const postAssertions = testconstant;
@@ -107,8 +102,8 @@ export default function AnalysisResult(result) {
                 <TableCell align="left">No.</TableCell>
                 <TableCell align="left">Assertions</TableCell>
                 <TableCell align="left">Fact Check</TableCell>
-                <TableCell align="left">Source</TableCell>
-                <TableCell align="left">Link</TableCell>
+                <TableCell align="left">Sources</TableCell>
+                <TableCell align="left">Reference Link</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>

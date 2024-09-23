@@ -5,12 +5,12 @@ import Divider from "@mui/material/Divider";
 import { Button } from "@mui/material";
 import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
 
-export default function URLInputBar(onAnalyse, inputUrl) {
+export default function URLInputBar({onAnalyse, inputUrl}) {
 
   const [url, setUrl] = React.useState("");
 
   const handleClick = () => {
-    setUrl(url);
+    inputUrl(url);
     onAnalyse();
   }
 
