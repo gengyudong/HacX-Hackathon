@@ -39,7 +39,8 @@ export default function SingleURLAnalysis() {
         })
         .then(data => {
           console.log('Success:', data);
-          setResult(JSON.stringify(response));
+          const jsonString = JSON.stringify(data);
+          setResult(JSON.parse(jsonString));
           setLoading(false);
           setEmpty(false);
         })
