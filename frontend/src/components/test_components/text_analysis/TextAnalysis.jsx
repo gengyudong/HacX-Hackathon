@@ -3,7 +3,6 @@ import URLInputBar from "./URLInputBar";
 import LoadingBackdrop from "./LoadingBackdrop";
 import AnalysisResult from "./AnalysisResult";
 import EmptyAnalysis from "./EmptyAnalysis";
-import testconstant from "../constants/testconstant";
 import AlertDialog from "./AlertDialog";
 
 export default function SingleURLAnalysis() {
