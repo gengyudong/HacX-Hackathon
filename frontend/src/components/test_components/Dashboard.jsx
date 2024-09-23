@@ -66,7 +66,7 @@ function DashboardLayoutBranding() {
     <AppProvider
       navigation={NAVIGATION}
       branding={{
-        logo: <SecurityIcon color="primary" />,
+        logo: <SecurityIcon color="primary" fontSize="large"/>,
         title: "Info-CrimeWatch",
       }}
       router={router}
