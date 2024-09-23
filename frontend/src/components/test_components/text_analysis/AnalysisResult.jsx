@@ -18,10 +18,10 @@ function PostRow(props) {
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-        <TableCell align="left">{row.Title}</TableCell>
+        <TableCell align="left">{row.post_title}</TableCell>
         <TableCell align="left">{row.Platform}</TableCell>
-        <TableCell align="left">{row.Author}</TableCell>
-        <TableCell align="left">{row.DatePosted}</TableCell>
+        <TableCell align="left">{row.user_name}</TableCell>
+        <TableCell align="left">{row.user_profile_link}</TableCell>
         <TableCell align="left">
           <Link>{row.SourceLink}</Link>
         </TableCell>
@@ -39,10 +39,10 @@ function AssertionRow(props) {
         <TableCell component="th" scope="row">
           {row.Number}
         </TableCell>
-        <TableCell align="left">{row.Assertions}</TableCell>
-        <TableCell align="left">{row.Fact_Check}</TableCell>
-        <TableCell align="left">{row.Source}</TableCell>
-        <TableCell align="left">{row.Link}</TableCell>
+        <TableCell align="left">{row.assertion}</TableCell>
+        <TableCell align="left">{row.factcheck}</TableCell>
+        <TableCell align="left">{row.source.sourceName}</TableCell>
+        <TableCell align="left">{row.source.sourceURL}</TableCell>
         <TableCell></TableCell>
       </TableRow>
     </React.Fragment>
@@ -51,17 +51,14 @@ function AssertionRow(props) {
 
 export default function AnalysisResult(result) {
 
-    const postDetails = [
-      {
-        Title: "Post Title",
-        Platform: "Platform",
-      }
-    ];
+  const query = result.result;  
+  const postDetails = query.postDetails.post_title;
+  const postAssertions = query.jsonDisinformation;
 
-    const postAssertions = testconstant;
-
-    const query = result;
+    
     console.log("Query: ", query);
+    console.log("Post Details: ", postDetails);
+    console.log("Post Assertions: ", postAssertions);
     
     return (
       <div>
@@ -72,6 +69,7 @@ export default function AnalysisResult(result) {
         >
           Post Details
         </Typography>
+        <h1>{postDetails}</h1>
         <TableContainer component={Paper} sx={{ margin: "auto", width: "90%" }}>
           <Table aria-label="table">
             <TableHead>
@@ -85,9 +83,9 @@ export default function AnalysisResult(result) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {postDetails.map((row) => (
+              {/* {postDetails.map((row) => (
                 <PostRow key={row.name} row={row} />
-              ))}
+              ))} */}
             </TableBody>
           </Table>
         </TableContainer>
