@@ -4,13 +4,16 @@ import LoadingBackdrop from "./LoadingBackdrop";
 import AnalysisResult from "./AnalysisResult";
 import EmptyAnalysis from "./EmptyAnalysis";
 import testconstant from "../constants/testconstant";
+import AlertDialog from "./AlertDialog";
 
 export default function SingleURLAnalysis() {
 
     const [url, setUrl] = React.useState("");
     const [loading, setLoading] = React.useState(false);
-    const [empty, setEmpty] = React.useState(false);
+    const [empty, setEmpty] = React.useState(true);
     const [result, setResult] = React.useState({});
+    const [alert, setAlert] = React.useState(false);
+    const [alertMessage, setAlertMessage] = React.useState("");
 
     const inputUrl = (url) => {
         setUrl(url);
@@ -28,28 +31,22 @@ export default function SingleURLAnalysis() {
         body: JSON.stringify({ post_url : url }), // Send the input value
         }).then(response => {
           if (!response.ok) {
+            setLoading(false);
+            setAlertMessage("Invalid URL. Please enter a valid URL.");
+            setAlert(true);
             throw new Error('Network response was not ok');
           }
           return response.json(); // Parse the response data
         })
         .then(data => {
-          console.log(typeof data);
-          console.log('Success:', data); // Handle the success response
+          console.log('Success:', data);
+          setResult(JSON.stringify(response));
+          setLoading(false);
+          setEmpty(false);
         })
         .catch(error => {
           console.error('Error:', error); // Handle any errors
         });
-
-        setLoading(false);
-
-        if (response) {
-          setResult(JSON.stringify(response));
-          console.log("misinfo ", result);
-          console.log(typeof testconstant);
-          console.log("misinfo ", testconstant);
-        } else {
-          setEmpty(true);
-        }
       }
     
     return (
@@ -59,6 +56,7 @@ export default function SingleURLAnalysis() {
           backgroundColor: "#011627",
         }}
       >
+        <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
         <URLInputBar onAnalyse={onAnalyse} inputUrl={inputUrl} />
         {loading ? <LoadingBackdrop /> : null}
         {empty ? <EmptyAnalysis /> : <AnalysisResult result={result}/>}

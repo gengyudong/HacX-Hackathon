@@ -19,7 +19,7 @@ export default function AlertDialog({ message, open, setOpen }) {
         aria-labelledby="alert"
         aria-describedby="alert"
       >
-        <DialogTitle id="alert-title">{"Invalid Input"}</DialogTitle>
+        <DialogTitle id="alert-title">{"Analysis Failed"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="aler-description">{message}</DialogContentText>
         </DialogContent>

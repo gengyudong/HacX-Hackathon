@@ -22,6 +22,9 @@ export default function LoadingBackdrop() {
         <Typography variant="h6" gutterBottom>
             Loading... Please wait
         </Typography>
+        <Button variant="contained" onClick={handleClose} color="inherit">
+          Cancel
+        </Button>
       </Backdrop>
     </div>
   );

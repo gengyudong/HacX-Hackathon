@@ -59,6 +59,9 @@ export default function AnalysisResult(result) {
     ];
 
     const postAssertions = testconstant;
+
+    const query = result;
+    console.log("Query: ", query);
     
     return (
       <div>
