@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const OpenAIHelper = require('./tools/jsonHelper');
+const jsonHelper1 = require('./tools/jsonHelper');
 const fetchRedditPostDetails = require('./functions/redditScrape');
 const fetchSearchResults = require('./functions/googleSearch');
 const { assertionExtractor, askAzureAboutImage } = require('./functions/azure');
@@ -12,7 +12,7 @@ const app = express();
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
-const openAIHelper = new OpenAIHelper();
+const jsonHelper = new jsonHelper1();
 
 app.post('/scrape', async (req, res) => {
   const { post_url } = req.body;
@@ -31,8 +31,8 @@ app.post('/scrape', async (req, res) => {
   const searchQuery = `${postDetails.post_title} ${postDetails.paragraph_texts.join(' ')}`;
   const searchResults = await fetchSearchResults(searchQueryGoogle);
   const assertionResult = await assertionExtractor(searchQuery);
-  const cleanAssertion = openAIHelper.cleanChatGPTJSONString(assertionResult);   
-  const parsedAssertion = openAIHelper.parseChatGPTJSONString(cleanAssertion);
+  const cleanAssertion = jsonHelper.cleanChatGPTJSONString(assertionResult);   
+  const parsedAssertion = jsonHelper.parseChatGPTJSONString(cleanAssertion);
 
   const disinformationResult = await disinformationDetector(parsedAssertion);
   const jsonData = JSON.stringify(disinformationResult, null, 2);
@@ -78,9 +78,9 @@ app.post('/describe-image', async (req, res) => {
         }
     `;    
     const response = await askAzureAboutImage({ base64Image: image_url, prompt });
-    const jsonResponse = openAIHelper.getResponseJSONString(response);
-    const cleanResponse = openAIHelper.cleanChatGPTJSONString(jsonResponse);   
-    const parsedResponse = openAIHelper.parseChatGPTJSONString(cleanResponse);
+    const jsonResponse = jsonHelper.getResponseJSONString(response);
+    const cleanResponse = jsonHelper.cleanChatGPTJSONString(jsonResponse);   
+    const parsedResponse = jsonHelper.parseChatGPTJSONString(cleanResponse);
     console.log('Parsed response:', parsedResponse);
     const disinformationSearch = `${parsedResponse.descriptionOfAnalysis} Please provide a long and clear assessment of its truthfulness and if it is AI-generated and spreads disinformation?`;
     const disinformationResult = await disinformationDetectorPic(disinformationSearch);

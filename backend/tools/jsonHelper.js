@@ -1,4 +1,4 @@
-class OpenAIHelper {
+class jsonHelper1 {
 
   getResponseJSONString(response) {
     return response.choices[0]?.message?.content || '';
@@ -20,4 +20,4 @@ class OpenAIHelper {
   }
 }
 
-module.exports = OpenAIHelper;
+module.exports = jsonHelper1;
