@@ -5,7 +5,7 @@ const EmptyAnalysis = () => {
   return (
     <Box xs={{ display: "flex"}}>
       <Typography color="primary" align='center' variant="h5" sx={{mt: "200px"}} noWrap={true}>
-        Please Enter a URL and click Analyse to start Analysing!
+        Please enter a URL and click Analyse to start Analysing!
         </Typography>
     </Box>
   );

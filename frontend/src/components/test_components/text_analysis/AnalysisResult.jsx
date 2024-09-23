@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import Link from "@mui/material/Link";
-import testconstant from "../constants/testconstant";
+// import testconstant from "../constants/testconstant";
 
 function PostRow(props) {
   const { row } = props;
@@ -19,12 +19,9 @@ function PostRow(props) {
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell align="left">{row.post_title}</TableCell>
-        <TableCell align="left">{row.Platform}</TableCell>
+        {/* <TableCell align="left">{row.Platform}</TableCell> */}
         <TableCell align="left">{row.user_name}</TableCell>
-        <TableCell align="left">{row.user_profile_link}</TableCell>
-        <TableCell align="left">
-          <Link>{row.SourceLink}</Link>
-        </TableCell>
+        <TableCell align="left"><Link>{row.user_profile_link}</Link></TableCell>
       </TableRow>
     </React.Fragment>
   );
@@ -37,12 +34,21 @@ function AssertionRow(props) {
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell component="th" scope="row">
-          {row.Number}
+          {row.assertionCount.slice(10)}
         </TableCell>
         <TableCell align="left">{row.assertion}</TableCell>
-        <TableCell align="left">{row.factcheck}</TableCell>
-        <TableCell align="left">{row.source.sourceName}</TableCell>
-        <TableCell align="left">{row.source.sourceURL}</TableCell>
+        <TableCell align="left">{row.factCheck}</TableCell>
+        <TableCell align="left">
+        {Array.isArray(row.source) && row.source.length > 0 ? (
+          row.source.map((link) => (
+            <Link key={link.sourceURL} href={link.sourceURL} target="_blank" rel="noopener noreferrer">
+              <p>{link.sourceName} <br /> Relevance score: {link.relevanceScore} </p> 
+          </Link>
+        ))
+        ) : (
+        <span>No sources available</span>
+        )}
+        </TableCell>    
         <TableCell></TableCell>
       </TableRow>
     </React.Fragment>
@@ -52,7 +58,7 @@ function AssertionRow(props) {
 export default function AnalysisResult(result) {
 
   const query = result.result;  
-  const postDetails = query.postDetails.post_title;
+  const postDetails = [query.postDetails];
   const postAssertions = query.jsonDisinformation;
 
     
@@ -69,23 +75,21 @@ export default function AnalysisResult(result) {
         >
           Post Details
         </Typography>
-        <h1>{postDetails}</h1>
         <TableContainer component={Paper} sx={{ margin: "auto", width: "90%" }}>
           <Table aria-label="table">
             <TableHead>
               <TableRow>
                 <TableCell align="left">Post Title</TableCell>
-                <TableCell align="left">Platform</TableCell>
+                {/* <TableCell align="left">Platform</TableCell> */}
                 <TableCell align="left">Author</TableCell>
-                <TableCell align="left">Date Posted</TableCell>
-                <TableCell align="left">Source Link</TableCell>
+                <TableCell align="left">User Profile</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {postDetails.map((row) => (
-                <PostRow key={row.name} row={row} />
-              ))} */}
+              {postDetails.map((row, index) => (
+                <PostRow key={index} row={row} />
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -103,14 +107,13 @@ export default function AnalysisResult(result) {
                 <TableCell align="left">No.</TableCell>
                 <TableCell align="left">Assertions</TableCell>
                 <TableCell align="left">Fact Check</TableCell>
-                <TableCell align="left">Sources</TableCell>
-                <TableCell align="left">Reference Link</TableCell>
+                <TableCell align="left">Supporting Sources</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
-              {postAssertions.map((row) => (
-                <AssertionRow key={row.name} row={row} />
+              {postAssertions.map((row, index) => (
+                <AssertionRow key={index} row={row} />
               ))}
             </TableBody>
           </Table>
