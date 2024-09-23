@@ -74,14 +74,14 @@ app.post('/describe-image', async (req, res) => {
 
         Please respond with a JSON object as follows:
         {
-        "descriptionOfAnalysis": "Chances of image being real: and Analysis:"
+        "descriptionOfAnalysis": "Chances of image being real: 0-1 and Analysis:"
         }
     `;    
     const response = await openAIHelper.askChatGPTAboutImage({ base64Image: image_url, prompt });
     const jsonResponse = openAIHelper.getResponseJSONString(response);
     const cleanResponse = openAIHelper.cleanChatGPTJSONString(jsonResponse);   
     const parsedResponse = openAIHelper.parseChatGPTJSONString(cleanResponse);
-    const disinformationSearch = `${parsedResponse.descriptionOfAnalysis} Please provide a long and clear assessment of its truthfulness and if it contains fake news and spreads disinformation?`;
+    const disinformationSearch = `${parsedResponse.descriptionOfAnalysis} Please provide a long and clear assessment of its truthfulness and if it is AI-generated and spreads disinformation?`;
     const disinformationResult = await disinformationDetector(disinformationSearch);
     const escapedResult = disinformationResult.replace(/"/g, '\\"');
     const cleanString = escapedResult.replace(/[\u0000-\u001F\u007F-\u009F]/g, ' '); 
