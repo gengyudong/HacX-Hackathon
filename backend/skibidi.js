@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const OpenAIHelper = require('./openai/OpenAIHelper');
+const OpenAIHelper = require('./tools/jsonHelper');
 const fetchRedditPostDetails = require('./functions/redditScrape');
 const fetchSearchResults = require('./functions/googleSearch');
-const assertionExtractor = require('./functions/azure');
+const { assertionExtractor, askAzureAboutImage } = require('./functions/azure');
 const { disinformationDetector, disinformationDetectorPic } = require('./functions/tavily');
 require('dotenv').config();
 
@@ -67,17 +67,17 @@ app.post('/describe-image', async (req, res) => {
     const prompt = `
         Analyze the image provided. Retrieve information on the content of the image such as:
         1. Words or text present in the image.
-        2. Subjects, objects or entities present in the image and include their names if recognisable.
+        2. Subjects, objects or entities present in the image and you must include their names.
         3. Any actions or activities taking place in the image.
         4. Any other relevant details you can infer from the image.
         Analysis has to be less than 200 characters.
 
         Please respond with a JSON object as follows:
         {
-        "descriptionOfAnalysis": "Chances of image being real: 0-1 and Analysis:"
+        "descriptionOfAnalysis": "Chances image is real: 0-1 and Analysis:"
         }
     `;    
-    const response = await openAIHelper.askChatGPTAboutImage({ base64Image: image_url, prompt });
+    const response = await askAzureAboutImage({ base64Image: image_url, prompt });
     const jsonResponse = openAIHelper.getResponseJSONString(response);
     const cleanResponse = openAIHelper.cleanChatGPTJSONString(jsonResponse);   
     const parsedResponse = openAIHelper.parseChatGPTJSONString(cleanResponse);

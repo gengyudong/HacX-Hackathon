@@ -2,15 +2,15 @@ const { AzureOpenAI } = require("openai");
 require('dotenv').config();
 
 // Load API details for Azure OpenAI
-const openai_endpoint = process.env["AZURE_OPENAI_ENDPOINT"];
-const openai_apiKey = process.env["AZURE_OPENAI_API_KEY"];
+const openAIendPoint = process.env["AZURE_OPENAI_ENDPOINT"];
+const openAIapiKey = process.env["AZURE_OPENAI_API_KEY"];
 const apiVersion = "2024-05-01-preview";
-const openai_deployment = "gpt-4o";
+const openAIdeployment = "gpt-4o";
 
 // Extract assertions from the scrapped content (OpenAI)
 async function assertionExtractor(prompt) {
     try {
-        const client = new AzureOpenAI({ openai_endpoint, openai_apiKey, apiVersion, openai_deployment });
+        const client = new AzureOpenAI({ openAIendPoint, openAIapiKey, apiVersion, openAIdeployment });
         const result = await client.chat.completions.create({
             messages: [
             { 
@@ -42,4 +42,30 @@ async function assertionExtractor(prompt) {
     }
 }
 
-module.exports = assertionExtractor
+    async function askAzureAboutImage({ base64Image, prompt, maxTokens = 1000 }) {
+        try {
+            const client = new AzureOpenAI({ openAIendPoint, openAIapiKey, apiVersion, openAIdeployment });
+            return client.chat.completions.create({
+                max_tokens: maxTokens,
+                messages: [
+                    {
+                      role: 'user',
+                      content: [
+                        { type: 'text', text: prompt },
+                        {
+                          type: 'image_url',
+                          image_url: { url: base64Image },
+                        },
+                      ],
+                    },
+                  ],
+                model: "",
+            });
+        } catch(error) {
+        console.error("Error calling Azure OpenAI:", error);
+        throw error;
+    }
+}
+
+
+module.exports = { assertionExtractor, askAzureAboutImage };
