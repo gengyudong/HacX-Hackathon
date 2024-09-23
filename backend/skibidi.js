@@ -5,7 +5,7 @@ const OpenAIHelper = require('./openai/OpenAIHelper');
 const fetchRedditPostDetails = require('./functions/redditscrape');
 const fetchSearchResults = require('./functions/googlesearch');
 const assertionExtractor = require('./functions/azure');
-const disinformationDetector = require('./functions/tavily');
+const { disinformationDetector, disinformationDetectorPic } = require('./functions/tavily');
 require('dotenv').config();
 
 const app = express();
@@ -58,7 +58,7 @@ app.post('/scrape', async (req, res) => {
 // Endpoint to handle image analysis requests
 app.post('/describe-image', async (req, res) => {
   const { image_url } = req.body;
-  
+  console.log('Image URL:', image_url);
   if (!image_url) {
     return res.status(400).json({ error: 'Image URL is required' });
   }
@@ -81,12 +81,14 @@ app.post('/describe-image', async (req, res) => {
     const jsonResponse = openAIHelper.getResponseJSONString(response);
     const cleanResponse = openAIHelper.cleanChatGPTJSONString(jsonResponse);   
     const parsedResponse = openAIHelper.parseChatGPTJSONString(cleanResponse);
+    console.log('Parsed response:', parsedResponse);
     const disinformationSearch = `${parsedResponse.descriptionOfAnalysis} Please provide a long and clear assessment of its truthfulness and if it is AI-generated and spreads disinformation?`;
-    const disinformationResult = await disinformationDetector(disinformationSearch);
+    const disinformationResult = await disinformationDetectorPic(disinformationSearch);
     const escapedResult = disinformationResult.replace(/"/g, '\\"');
     const cleanString = escapedResult.replace(/[\u0000-\u001F\u007F-\u009F]/g, ' '); 
     const jsonString = `{"disinformationResult": "${cleanString}"}`; // Example JSON string  
     const jsonDisinformation = JSON.parse(jsonString);
+    console.log('Disinformation result:', jsonDisinformation);
     res.status(200).json(jsonDisinformation);
   } catch (error) {
     console.error('Error processing image:', error);

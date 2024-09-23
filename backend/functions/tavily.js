@@ -26,7 +26,7 @@ async function disinformationDetector(query) {
                 "include_domains": [],
                 "exclude_domains": []
             })  
-            
+            console.log(decision)
             let resultArray = [];
             decision.data.results.forEach((result) => {
                 resultArray.push(result);
@@ -46,6 +46,28 @@ async function disinformationDetector(query) {
     }
 }
 
+async function disinformationDetectorPic(query) {
+    try {
+        // edit query
+        const result = await axios.post(tavilyEndpoint, {
+            "api_key": tavilyApikey,
+            "query": query,
+            "search_depth": "basic",
+            "topic": "general",
+            "include_answer": true,
+            "include_images": false,
+            "include_image_descriptions": false,
+            "include_raw_content": false,
+            "max_results": 20,
+            "include_domains": [],
+            "exclude_domains": []
+        })
+        return result.data.answer;
+    } catch (error) {
+        console.error("Error calling Tavily AI:", error);
+        throw error;
+    }
+}
 // Function to extract the source from the results
 function getSource(results) {
     const sourceMap = {};
@@ -99,5 +121,5 @@ function getBaseDomain(url) {
 
 // main();
 
-module.exports = disinformationDetector;
+module.exports = { disinformationDetector, disinformationDetectorPic };
 
