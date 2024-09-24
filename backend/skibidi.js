@@ -6,6 +6,7 @@ const fetchSearchResults = require('./functions/googleSearch');
 const { askAzureAboutImage } = require('./functions/azure');
 const { disinformationDetector, disinformationDetectorPic } = require('./functions/tavily');
 const scrapeBody = require('./functions/scrapeany');
+const getTopSearchesAroundDate = require('./functions/googletrends');
 require('dotenv').config();
 
 const app = express();
@@ -101,6 +102,11 @@ app.post('/scrape', async (req, res) => {
   res.status(200).json(result);
 });
 
+app.post('/topsearch', async (req, res) => {
+  const onDate = getCurrentDateString();
+  const result = await getTopSearchesAroundDate(onDate);
+  res.status(200).json(result);
+}
 
 // Start the server
 app.listen(3001, () => {
