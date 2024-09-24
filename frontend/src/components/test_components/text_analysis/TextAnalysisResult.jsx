@@ -96,11 +96,7 @@ export default function AnalysisResult(result) {
   const postDetails = [query.postDetails];
   const postAssertions = query.jsonDisinformation;
   const relatedPosts = query.similarResults;
-
-    
-    console.log("Query: ", query);
-    console.log("Post Details: ", postDetails);
-    console.log("Post Assertions: ", postAssertions);
+  console.log(query);
     
     return (
       <div>
@@ -121,7 +117,8 @@ export default function AnalysisResult(result) {
             <TableHead>
               <TableRow>
                 <TableCell align="left">Post Title</TableCell>
-                <TableCell align="left">Author</TableCell>
+                <TableCell align="left">Date</TableCell>
+                <TableCell align="left">Author/Username</TableCell>
                 <TableCell align="left">Platform</TableCell>
                 <TableCell />
               </TableRow>

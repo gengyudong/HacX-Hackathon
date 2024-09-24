@@ -19,8 +19,6 @@ export default function ValidationDialog({ result, openDialog, setOpenDialog }) 
     setOpen(false);
   };
 
-  console.log("dialog Result: ", result);
-
   return (
     <React.Fragment>
       <Dialog
