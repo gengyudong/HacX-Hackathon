@@ -46,7 +46,7 @@ export default function SingleURLAnalysis() {
     };
 
     return (
-        <div className="Single-Post" style={{ backgroundColor: "#011627" }}>
+        <div className="Single-Post">
             <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
             <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
             {loading ? <LoadingBackdrop /> : null}
