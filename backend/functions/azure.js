@@ -42,7 +42,7 @@ async function assertionExtractor(prompt) {
     }
 }
 
-    async function askAzureAboutImage({ base64Image, prompt, maxTokens = 1000 }) {
+    async function askAzureAboutImage({ base64Image, prompt, maxTokens = 5000 }) {
         try {
             const client = new AzureOpenAI({ openAIendPoint, openAIapiKey, apiVersion, openAIdeployment });
             return client.chat.completions.create({
