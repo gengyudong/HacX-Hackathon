@@ -4,9 +4,11 @@ import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import TroubleshootIcon from "@mui/icons-material/Troubleshoot";
 import PhotoIcon from "@mui/icons-material/DirtyLens";
+import VideoIcon from "@mui/icons-material/VideoCameraFront";
 import SecurityIcon from "@mui/icons-material/Security";
 import TextAnalysis from "./text_analysis/TextAnalysis";
 import PhotoAnalysis from "./photo_analysis/PhotoAnalysis";
+import VideoAnalysis from "./video_analysis/VideoAnalysis";
 import LandingPage from "./LandingPage";
 
 const NAVIGATION = [
@@ -19,6 +21,11 @@ const NAVIGATION = [
     segment: "photoanalysis",
     title: "Photo Analysis",
     icon: <PhotoIcon />,
+  },
+  {
+    segment: "videoanalysis",
+    title: "Audio Analysis",
+    icon: <VideoIcon />,
   },
 ];
 
@@ -48,7 +55,9 @@ function PageContent({ pathname }) {
   if (pathname === "/photoanalysis") {
     return <PhotoAnalysis />;
   }
-  
+  if (pathname === "/videoanalysis") {
+    return <VideoAnalysis />;
+  }
 }
 
 function DashboardLayoutBranding() {

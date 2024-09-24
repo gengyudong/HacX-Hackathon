@@ -107,4 +107,49 @@ async function bodyTagExtractor(query) {
     }
 }
 
-module.exports = { assertionExtractor, askAzureAboutImage, bodyTagExtractor };
+async function getRelevantTopSearches(onDate, getTopSearchesAroundDate) {
+    try {
+        const client = new AzureOpenAI({ openAIendPoint, openAIapiKey, apiVersion, openAIdeployment });
+        const promptData = await getTopSearchesAroundDate(onDate)
+        const prompt = JSON.stringify(promptData)
+        const result = await client.chat.completions.create({
+            messages: [
+                {
+                    "role": "system",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "You are given a JSON in the string format. This contains information about top google searches which span over a few days, or might be just one. For each date, there are queries, these are topics that people search. In each query, there might be some related_queries, which are related topics. Within each query there are also articles and each article has a title, link, source, snippet and date field (there might be more but I'm not interested in them). Filter through all this information in the JSON string and pick out the queries with articles that are closely related to Singapore, or can affect public interest and the economy in Singapore (doesn't have to be about Singapore). Return the information in a JSON string. This is an example format: { query: “Singapore new prime minister”, articles: { link: “article_link”, source: “article source”, snippet:”snippet”, date: “5 hours ago”}} The example only shows one query, but there should be more in the JSON string returned (each query will have their own articles, and each articles object only have one query). Parse the data into a JSON string for me, nothing else, not even the weird json''' ''' you put."
+                        }
+                    ]
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": prompt
+                        }
+                    ]
+                }
+            ],
+            model: "",
+        });
+        // Extract the content from the OpenAI response
+        const responseContent = result.choices[0].message.content;
+        // Remove unwanted characters at the beginning and end
+        const cleanedResult = responseContent
+            .replace(/^```json\s*/, '') // Remove leading "```json" and any whitespace
+            .replace(/```$/, '') // Remove trailing "```"
+            .trim(); // Trim any extra whitespace
+        // Try to parse the cleaned response
+        const responseJson = JSON.parse(cleanedResult);
+        // Return the parsed JSON object
+        return responseJson;
+    } catch (error) {
+        console.error("Error calling Azure OpenAI:", error);
+        throw error;
+    }
+}
+
+module.exports = { assertionExtractor, askAzureAboutImage, bodyTagExtractor, getRelevantTopSearches };
