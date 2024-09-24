@@ -6,6 +6,9 @@ import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import AnalyseIcon from "@mui/icons-material/Insights";
 import GoToIcon from "@mui/icons-material/Place";
+import LoadingBackdrop from "./LoadingBackdrop";
+import ValidationDialog from "./ValidationDialog";
+import AlertDialog from "./AlertDialog";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -53,6 +56,13 @@ const StyledMenu = styled((props) => (
 export default function OptionButton({source}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [loading, setLoading] = React.useState(false);
+  const [empty, setEmpty] = React.useState(true);
+  const [result, setResult] = React.useState({});
+  const [alert, setAlert] = React.useState(false);
+  const [alertMessage, setAlertMessage] = React.useState("");
+  const [openDialog, setOpenDialog] = React.useState(false);
+  
   const fact_source = source;
   const source_url = source.sourceURL;
 
@@ -61,14 +71,54 @@ export default function OptionButton({source}) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+};
+  const handleGoto = () => {
+    setAnchorEl(null);
     window.open(source_url, "_blank", "noopener,noreferrer");
   };
 
-
   console.log("soure: ", source);
+
+  const handleValidate = async (event) => {
+    event.preventDefault(); // Prevent default behavior if using a form
+    console.log("Analyse URL: ", source_url);
+    setAnchorEl(null);
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:3001/scrape", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ post_url: source_url }),
+      });
+
+      if (!response.ok) {
+        setLoading(false);
+        setAlertMessage("Invalid URL. Please enter a valid URL.");
+        setAlert(true);
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("Success:", data);
+      setResult(data);
+      setOpenDialog(true);
+      setLoading(false);
+      setEmpty(false);
+    } catch (error) {
+      console.error("Error:", error);
+      setAlertMessage(error.message);
+      setAlert(true);
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
+      <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
+      {loading ? <LoadingBackdrop /> : null}
       <Button
         id="customized-button"
         aria-controls={open ? "customized-menu" : undefined}
@@ -93,16 +143,15 @@ export default function OptionButton({source}) {
         sx={{ fontSize: "0.8rem" }}
       >
         <MenuItem
-          onClick={handleClose}
+          onClick={handleGoto}
           disableRipple
           sx={{ fontSize: "0.8rem" }}
-          
         >
           <GoToIcon />
           Go to Post
         </MenuItem>
         <MenuItem
-          onClick={handleClose}
+          onClick={handleValidate}
           disableRipple
           sx={{ fontSize: "0.8rem" }}
         >
@@ -110,6 +159,13 @@ export default function OptionButton({source}) {
           Source Analysis
         </MenuItem>
       </StyledMenu>
+      {openDialog ? (
+        <ValidationDialog
+          result={result}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+        />
+      ) : null}
     </div>
   );
 }

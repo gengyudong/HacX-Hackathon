@@ -43,6 +43,8 @@ export default function SingleURLAnalysis() {
       setEmpty(false);
     } catch (error) {
       console.error("Error:", error);
+      setAlertMessage(error.message);
+      setAlert(true);
       setLoading(false);
     }
   };
