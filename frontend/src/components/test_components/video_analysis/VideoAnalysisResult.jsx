@@ -8,11 +8,8 @@ import CardContent from "@mui/material/CardContent";
 export default function AnalysisResult({result, imageURL}) {
 
   const query = result;
-  const sourceURL = imageURL;
-
     
     console.log("Query: ", query);
-    console.log("Source URL: ", sourceURL);
     
     return (
       <div>
@@ -23,23 +20,34 @@ export default function AnalysisResult({result, imageURL}) {
                 Video Details
               </Typography>
             </CardContent>
-
             <CardContent>
               <Typography
                 gutterBottom
-                variant="h7"
+                variant="h5"
                 component="div"
                 pb={"5px"}
               >
-                Source URL: 
-                <Link>{sourceURL}</Link>
+                Analysis Result:
               </Typography>
-              <Typography gutterBottom variant="h5" component="div">
-                Analysis Result
-              </Typography>
+              {query.jsonDisinformation.map((output, index) => (
+              <Typography gutterBottom variant="h6" component="div">
+                {output.assertion}
               <Typography variant="body1" sx={{ display: "block" }}>
-                {result}
+                {output.factCheck}
+              <Typography variant="body1" sx={{ display: "block" }}>
+                <br></br>
+                Sources:
+                <ol>
+                    {output.source.map((url, index) => (
+                    <li key={index}>
+                      <Link href={url.sourceURL}>{url.sourceName}</Link>
+                    </li>
+                  ))}              
+                </ol>
               </Typography>
+              </Typography>
+              </Typography>
+              ))}
             </CardContent>
           </CardActionArea>
         </Card>

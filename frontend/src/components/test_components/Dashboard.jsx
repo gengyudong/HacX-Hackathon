@@ -58,6 +58,7 @@ function PageContent({ pathname }) {
   if (pathname === "/videoanalysis") {
     return <VideoAnalysis />;
   }
+  return <LandingPage />;
 }
 
 function DashboardLayoutBranding() {

@@ -11,7 +11,7 @@ async function disinformationDetector(query) {
         let result = [];
 
         for (const [key, value] of Object.entries(query)) {
-            let assertion = `For the assertion below, do the following: \n1. State if the assertion is true or false. \n2. Explain your reasoning, include quotes from the sources that you reference from.\n\nAssertion: ${value}`;
+            let assertion = `For the assertion below, do the following: \n1. True/False. \n2. Explain your reasoning, include quotes from the sources that you reference from.\n\nAssertion: ${value}`;
 
             let decision = await axios.post(tavilyEndpoint, {
                 "api_key": tavilyApikey,
@@ -58,7 +58,7 @@ async function disinformationDetectorPic(query) {
             "include_images": false,
             "include_image_descriptions": false,
             "include_raw_content": false,
-            "max_results": 20,
+            "max_results": 2,
             "include_domains": [],
             "exclude_domains": []
         })
@@ -111,8 +111,8 @@ function getBaseDomain(url) {
 
 // async function main() {
 //     try {
-//         const assertions = await disinformationDetector(query);
-//         const jsonData = JSON.stringify(assertions, null, 2);
+//         const assertions = await disinformationDetector("describe this picture: https://imageio.forbes.com/specials-images/imageserve/64b48af219dee92a6b534a09/Fake-photo-created-with-AI-showing-Donald-Trump-with-Martin-Luther-King-Jr-/960x0.jpg?format=jpg&width=960");
+//         const jsonData = JSON.stringify(assertions.data, null, 2);
 //         console.log(jsonData);
 //     } catch (error) {
 //         console.error("Error in main function:", error);

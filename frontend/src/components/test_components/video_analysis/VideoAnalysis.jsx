@@ -1,5 +1,5 @@
 import React from "react";
-import URLInputBar from "../components/URLInputBar";
+import FileInputBar from "../components/FileInputBar";
 import LoadingBackdrop from "../components/LoadingBackdrop";
 import VideoAnalysisResult from "../video_analysis/VideoAnalysisResult";
 import EmptyAnalysis from "../components/EmptyAnalysis";
@@ -7,7 +7,7 @@ import AlertDialog from "../components/AlertDialog";
 import axios from "axios";
 
 export default function SingleURLAnalysis() {
-  const [url, setUrl] = React.useState("");
+  const [file, setFile] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [empty, setEmpty] = React.useState(true);
   const [result, setResult] = React.useState({});
@@ -18,14 +18,18 @@ export default function SingleURLAnalysis() {
 
   const onAnalyse = async (event) => {
     event.preventDefault(); // Prevent default behavior if using a form
-    console.log("Analyse URL: ", url);
     setLoading(true);
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/describe-image",
+        "http://localhost:3001/audio",
         {
-          image_url: url,
+          url: file,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -38,7 +42,7 @@ export default function SingleURLAnalysis() {
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.data.disinformationResult;
+      const data = await response.data;
       console.log("Success:", data);
       setResult(data);
       setLoading(false);
@@ -52,12 +56,12 @@ export default function SingleURLAnalysis() {
   return (
     <div className="Single-Post">
       <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
-      <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
+      <FileInputBar onAnalyse={onAnalyse} setFile={setFile} url={file} />
       {loading ? <LoadingBackdrop /> : null}
       {empty ? (
         <EmptyAnalysis AnalysisTypes={AnalysisTypes} />
       ) : (
-        <VideoAnalysisResult result={result} imageURL={url} />
+        <VideoAnalysisResult result={result} imageURL={file} />
       )}
     </div>
   );

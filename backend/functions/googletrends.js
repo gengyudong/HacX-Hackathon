@@ -63,7 +63,7 @@ async function getTopSearchesAroundDate(onDate) { //date format: yyyymmdd (strin
     });
 }
 
-module.exports =  getTopSearchesAroundDate;
+module.exports =  { getTopSearchesAroundDate, getCurrentDateString };
 // // Run function to see output
 // async function run() {
 //     const todayDate = getCurrentDateString();

@@ -11,14 +11,13 @@ export default function LandingPage() {
           justifyContent: "center",
           alignItems: "center",
           margin: "auto",
-          marginTop: "20%",
         }}
       >
         <Typography variant="h3" color="primary" padding={"25px"}>
           Welcome Information Crimewatch
         </Typography>
         <Box>
-          <Typography variant="h4" color="primary">
+          <Typography variant="h4" color="primary" textAlign={"center"}>
             Click Side Bar to select the type of analysis
           </Typography>
           <br></br>

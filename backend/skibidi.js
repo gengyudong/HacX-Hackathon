@@ -3,10 +3,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jsonHelper1 = require('./tools/jsonHelper');
 const fetchSearchResults = require('./functions/googleSearch');
-const { askAzureAboutImage } = require('./functions/azure');
+const { assertionExtractor, askAzureAboutImage, getRelevantTopSearches } = require('./functions/azure');
 const { disinformationDetector, disinformationDetectorPic } = require('./functions/tavily');
 const scrapeBody = require('./functions/scrapeany');
-const getTopSearchesAroundDate = require('./functions/googletrends');
+const { getTopSearchesAroundDate, getCurrentDateString } = require('./functions/googletrends');
+const mediaTranscribe = require('./functions/mediaTranscribe');
 require('dotenv').config();
 
 const app = express();
@@ -103,10 +104,32 @@ app.post('/scrape', async (req, res) => {
 });
 
 app.post('/topsearch', async (req, res) => {
-  const onDate = getCurrentDateString();
-  const result = await getTopSearchesAroundDate(onDate);
+  const todayDate = getCurrentDateString();
+  const result = await getTopSearchesAroundDate(todayDate);
+  const resultToday = await getRelevantTopSearches(todayDate, getTopSearchesAroundDate);
+  console.log('Top searches:', resultToday);
+  res.status(200).json(resultToday);
+});
+
+app.post('/audio', async (req, res) => {
+  const audio_url = './public/test.mp4';
+  console.log('Audio URL:', audio_url);
+  if (!audio_url) {
+    return res.status(400).json({ error: 'Audio URL is required' });
+  }
+  const resultTranscribe = await mediaTranscribe(audio_url);
+  const assertions = await assertionExtractor(resultTranscribe.text);
+  const cleanResults = jsonHelper.cleanChatGPTJSONString(assertions);   
+  const parsedResults = jsonHelper.parseChatGPTJSONString(cleanResults);
+  const disinformationResult = await disinformationDetector(parsedResults);
+  const jsonData = JSON.stringify(disinformationResult, null, 2);
+  const jsonDisinformation = JSON.parse(jsonData);
+  console.log('Parsed results:', parsedResults);
+  console.log('Disinformation result:', jsonDisinformation);
+  const result = { parsedResults, jsonDisinformation };
   res.status(200).json(result);
-}
+
+});
 
 // Start the server
 app.listen(3001, () => {

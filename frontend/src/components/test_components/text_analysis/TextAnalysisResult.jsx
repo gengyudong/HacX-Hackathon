@@ -41,7 +41,7 @@ function AssertionRow(props) {
         <TableCell align="left">{row.factCheck}</TableCell>
         <TableCell align="right">
           {Array.isArray(row.source) && row.source.length > 0 ? (
-            row.source.map((link) => (
+            row.source.map((link, index) => (
               <Box>
                 {/* <Link
                   key={link.sourceURL}
