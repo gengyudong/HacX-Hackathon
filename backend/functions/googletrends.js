@@ -52,13 +52,29 @@ async function getTopSearchesAroundDate(onDate) { //date format: yyyymmdd (strin
 
 // Run function to see output
 async function run() {
-    const result = await getRelevantTopSearches("20240924", getTopSearchesAroundDate);
+    const todayDate = getCurrentDateString();
+    // Can use threeDaysAgoDate to get more search results
+    const threeDaysAgoDate = getDateStringDaysAgo(3);
 
+    const resultToday = await getRelevantTopSearches(todayDate, getTopSearchesAroundDate);
+
+    // This is for Option 2 to get the 3 days ago to combine with today's results to get the whole week
+    // const resultThreeDaysAgo = await getRelevantTopSearches(threeDaysAgoDate, getTopSearchesAroundDate);
+    // const resultWeek = Object.assign({}, resultToday, resultThreeDaysAgo);
+
+    // Option 1: Get only around the date specified (-3 days around there)
     // Run this to get the actual Json
-    console.log(result);
+    console.log(resultToday);
 
     // Run this to get string version
-    // console.log(JSON.stringify(result))
+    // console.log(JSON.stringify(resultToday));
+
+    // Option 2: Get whole week (around 6 days but openai parsing not very consistent, some errors)
+    // Run this to get the actual Json
+    // console.log(resultWeek);
+
+    // Run this to get string version
+    // console.log(JSON.stringify(resultWeek));
 }
 
 run();  // This will execute the async function and log the result
