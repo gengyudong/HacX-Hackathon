@@ -2,10 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const jsonHelper1 = require('./tools/jsonHelper');
-const fetchRedditPostDetails = require('./functions/redditScrape');
 const fetchSearchResults = require('./functions/googleSearch');
-const { assertionExtractor, askAzureAboutImage } = require('./functions/azure');
+const { askAzureAboutImage } = require('./functions/azure');
 const { disinformationDetector, disinformationDetectorPic } = require('./functions/tavily');
+const scrapeBody = require('./functions/scrapeany');
 require('dotenv').config();
 
 const app = express();
@@ -14,48 +14,6 @@ app.use(bodyParser.json()); // Middleware to parse JSON bodies
 
 const jsonHelper = new jsonHelper1();
 
-app.post('/scrape', async (req, res) => {
-  const { post_url } = req.body;
-
-  if (!post_url) {
-      return res.status(400).json({ error: 'No post URL provided' });
-  }
-
-  const postDetails = await fetchRedditPostDetails(post_url);
-
-  if (!postDetails) {
-      return res.status(500).json({ error: 'Failed to scrape the post' });
-  }
-
-  const searchQueryGoogle = `${postDetails.post_title}`;
-  const searchQuery = `${postDetails.post_title} ${postDetails.paragraph_texts.join(' ')}`;
-  const searchResults = await fetchSearchResults(searchQueryGoogle);
-  const assertionResult = await assertionExtractor(searchQuery);
-  const cleanAssertion = jsonHelper.cleanChatGPTJSONString(assertionResult);   
-  const parsedAssertion = jsonHelper.parseChatGPTJSONString(cleanAssertion);
-
-  const disinformationResult = await disinformationDetector(parsedAssertion);
-  const jsonData = JSON.stringify(disinformationResult, null, 2);
-  const jsonDisinformation = JSON.parse(jsonData);
-
-  // const parsedAssertion = openAIHelper.parseChatGPTJSONString(assertionResult);
-
-  // const disinformationSearch = `${parsedAssertion.assertion} Can you provide a long and clear assessment of its truthfulness and if it contains fake news and spreads disinformation?`;
-  // const disinformationResult = await disinformationDetector(disinformationSearch);
-  // const escapedResult = disinformationResult.replace(/"/g, '\\"');
-  // const cleanString = escapedResult.replace(/[\u0000-\u001F\u007F-\u009F]/g, ' '); 
-  // const jsonString = `{"disinformationResult": "${cleanString}"}`; // Example JSON string
-  // const jsonDisinformation = JSON.parse(jsonString);
-  const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
-    title: result.title,
-    link: result.link,
-  }));
-  
-  const result = { postDetails, similarResults, jsonDisinformation };
-  res.status(200).json(result);
-});
-
-// Endpoint to handle image analysis requests
 app.post('/describe-image', async (req, res) => {
   const { image_url } = req.body;
   console.log('Image URL:', image_url);
@@ -96,7 +54,87 @@ app.post('/describe-image', async (req, res) => {
   }
 });
 
+app.post('/scrape', async (req, res) => {
+  const { post_url } = req.body;
+
+  if (!post_url) {
+      return res.status(400).json({ error: 'No post URL provided' });
+  }
+
+  const scrapeResults = await scrapeBody(post_url);
+  console.log('Post details:', scrapeResults);
+
+  if (!scrapeResults) {
+      return res.status(500).json({ error: 'Failed to scrape the post' });
+  }
+
+  const cleanResults = jsonHelper.cleanChatGPTJSONString(scrapeResults);   
+  const parsedResults = jsonHelper.parseChatGPTJSONString(cleanResults);
+
+  const postDetails = {
+    post_title: parsedResults.post_title,
+    author: parsedResults.author,
+    date: parsedResults.date,
+    platform: parsedResults.platform
+};
+
+// Extract assertions
+  const assertions = {
+      assertion_1: parsedResults.assertion_1,
+      assertion_2: parsedResults.assertion_2,
+      assertion_3: parsedResults.assertion_3
+  };
+
+  const searchQueryGoogle = `${postDetails.post_title}`;
+  const searchResults = await fetchSearchResults(searchQueryGoogle);
+
+  const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
+    title: result.title,
+    link: result.link,
+  }));
+
+  const disinformationResult = await disinformationDetector(assertions);
+  const jsonData = JSON.stringify(disinformationResult, null, 2);
+  const jsonDisinformation = JSON.parse(jsonData);
+  
+  const result = { postDetails, similarResults, jsonDisinformation };
+  res.status(200).json(result);
+});
+
 // Start the server
 app.listen(3001, () => {
   console.log('Server running on http://localhost:3001');
 });
+
+// app.post('/redditscrape', async (req, res) => {
+//   const { post_url } = req.body;
+
+//   if (!post_url) {
+//       return res.status(400).json({ error: 'No post URL provided' });
+//   }
+
+//   const postDetails = await fetchRedditPostDetails(post_url);
+
+//   if (!postDetails) {
+//       return res.status(500).json({ error: 'Failed to scrape the post' });
+//   }
+
+//   const searchQueryGoogle = `${postDetails.post_title}`;
+//   const searchQuery = `${postDetails.post_title} ${postDetails.paragraph_texts.join(' ')}`;
+//   const searchResults = await fetchSearchResults(searchQueryGoogle);
+//   const assertionResult = await assertionExtractor(searchQuery);
+//   const cleanAssertion = jsonHelper.cleanChatGPTJSONString(assertionResult);   
+//   const parsedAssertion = jsonHelper.parseChatGPTJSONString(cleanAssertion);
+
+//   const disinformationResult = await disinformationDetector(parsedAssertion);
+//   const jsonData = JSON.stringify(disinformationResult, null, 2);
+//   const jsonDisinformation = JSON.parse(jsonData);
+
+//   const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
+//     title: result.title,
+//     link: result.link,
+//   }));
+  
+//   const result = { postDetails, similarResults, jsonDisinformation };
+//   res.status(200).json(result);
+// });
