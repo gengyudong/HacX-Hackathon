@@ -107,8 +107,7 @@ async function bodyTagExtractor(query) {
     }
 }
 
-module.exports = { assertionExtractor, askAzureAboutImage, bodyTagExtractor };
-async function getRelevantTopSearches(onDate, getTopSearchesOnDate) {
+async function getRelevantTopSearches(onDate, getTopSearchesAroundDate) {
     try {
         const client = new AzureOpenAI({ openAIendPoint, openAIapiKey, apiVersion, openAIdeployment });
         const promptData = await getTopSearchesAroundDate(onDate)
