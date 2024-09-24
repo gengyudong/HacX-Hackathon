@@ -13,7 +13,7 @@ export default function SingleURLAnalysis() {
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState("");
 
-  const analysisTypes = "Text";
+  const analysisTypes = "Online Article";
 
   const onAnalyse = async (event) => {
     event.preventDefault(); // Prevent default behavior if using a form

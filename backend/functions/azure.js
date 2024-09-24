@@ -67,5 +67,44 @@ async function assertionExtractor(prompt) {
     }
 }
 
+async function bodyTagExtractor(query) {
+    try {
+        const client = new AzureOpenAI({ openAIendPoint, openAIapiKey, apiVersion, openAIdeployment });
+        const prompt = `A chunk of <body> tag will be passed to you. 
+                        Identify any information that can be assertions made by online netizens or news published by some agency. 
+                        Your goal is to identity all of the assertions or comments made within the paragraphs. 
+                        Return the output in JSON format 
+                        {\"post_title\": \"Input post title you identify here\", \"author\": \"Input author you identify here\", \"date\": \"Input date you identify here\", \"platform\": \"Input platform you identify here\", \"assertion_1\": \"Input the assertion you identify here\"}. 
+                        Limit to 3 assertions. Just return the JSON will do, do not add anything before or after the output\n\n`;
+        const result = await client.chat.completions.create({
+            messages: [
+            { 
+                "role": "system", 
+                "content": [
+                    {
+                    "type": "text",
+                    "text": prompt
+                    }
+                ] 
+            },
+            { 
+                "role": "user", 
+                "content": [
+                    {
+                    "type": "text",
+                    "text": query
+                    }
+                ] 
+            }
+            ],
+            model: "",
+        });
+        const response = result.choices.map(choice => choice.message.content).join('\n');
+        return response;
+    } catch(error) {
+        console.error("Error calling Azure OpenAI:", error);
+        throw error;
+    }
+}
 
-module.exports = { assertionExtractor, askAzureAboutImage };
+module.exports = { assertionExtractor, askAzureAboutImage, bodyTagExtractor };

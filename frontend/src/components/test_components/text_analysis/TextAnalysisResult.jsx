@@ -19,9 +19,9 @@ function PostRow(props) {
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell align="left">{row.post_title}</TableCell>
-        {/* <TableCell align="left">{row.Platform}</TableCell> */}
-        <TableCell align="left">{row.user_name}</TableCell>
-        <TableCell align="left"><Link>{row.user_profile_link}</Link></TableCell>
+        <TableCell align="left">{row.date}</TableCell>
+        <TableCell align="left">{row.author}</TableCell>
+        <TableCell align="left">{row.platform}</TableCell>
       </TableRow>
     </React.Fragment>
   );
@@ -80,9 +80,9 @@ export default function AnalysisResult(result) {
             <TableHead>
               <TableRow>
                 <TableCell align="left">Post Title</TableCell>
-                {/* <TableCell align="left">Platform</TableCell> */}
+                <TableCell align="left">Date</TableCell>
                 <TableCell align="left">Author</TableCell>
-                <TableCell align="left">User Profile</TableCell>
+                <TableCell align="left">Platform</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
