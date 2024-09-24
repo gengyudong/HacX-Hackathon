@@ -35,7 +35,6 @@ export default function AnalysisResult({result, imageURL}) {
                 gutterBottom
                 variant="h7"
                 component="div"
-                align="justified"
                 pb={"5px"}
               >
                 Source URL: 

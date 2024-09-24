@@ -1,7 +1,7 @@
 import React from "react";
 import URLInputBar from "../components/URLInputBar";
 import LoadingBackdrop from "../components/LoadingBackdrop";
-import AnalysisResult from "./AnalysisResult";
+import TextAnalysisResult from "./TextAnalysisResult";
 import EmptyAnalysis from "../components/EmptyAnalysis";
 import AlertDialog from "../components/AlertDialog";
 
@@ -52,7 +52,11 @@ export default function SingleURLAnalysis() {
       <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
       <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
       {loading ? <LoadingBackdrop /> : null}
-      {empty ? <EmptyAnalysis AnalysisTypes={analysisTypes}/> : <AnalysisResult result={result} />}
+      {empty ? (
+        <EmptyAnalysis AnalysisTypes={analysisTypes} />
+      ) : (
+        <TextAnalysisResult result={result} />
+      )}
     </div>
   );
 }

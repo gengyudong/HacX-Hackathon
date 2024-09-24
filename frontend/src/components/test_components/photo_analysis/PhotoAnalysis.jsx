@@ -1,7 +1,7 @@
 import React from "react";
 import URLInputBar from "../components/URLInputBar";
 import LoadingBackdrop from "../components/LoadingBackdrop";
-import AnalysisResult from "./AnalysisResult";
+import PhotoAnalysisResult from "./PhotoAnalysisResult";
 import EmptyAnalysis from "../components/EmptyAnalysis";
 import AlertDialog from "../components/AlertDialog";
 import axios from "axios";
@@ -57,7 +57,7 @@ export default function SingleURLAnalysis() {
       {empty ? (
         <EmptyAnalysis AnalysisTypes={AnalysisTypes} />
       ) : (
-        <AnalysisResult result={result} imageURL={url} />
+        <PhotoAnalysisResult result={result} imageURL={url} />
       )}
     </div>
   );
