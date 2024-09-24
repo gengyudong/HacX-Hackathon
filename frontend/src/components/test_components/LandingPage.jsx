@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-
+import PopularSearch from "./popular_search/PopularSearch";
 
 export default function LandingPage() {
     return (
@@ -21,6 +21,11 @@ export default function LandingPage() {
           <Typography variant="h4" color="primary">
             Click Side Bar to select the type of analysis
           </Typography>
+          <br></br>
+          <Typography variant="h6" color="secondary" textAlign={"center"}>
+            or click on the popular searches below
+          </Typography>
+          <PopularSearch />
         </Box>
       </Box>
     );
