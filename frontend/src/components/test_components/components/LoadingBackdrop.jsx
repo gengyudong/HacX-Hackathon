@@ -4,25 +4,31 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
 
-export default function LoadingBackdrop() {
-  
+export default function LoadingBackdrop({ abordAnalysis }) {
   const [open, setOpen] = React.useState(true);
-  const handleClose = () => {
+  
+  const handleCancel = () => {
+    console.log("abosrt prop", abordAnalysis);
+    abordAnalysis();
     setOpen(false);
   };
 
   return (
     <div>
       <Backdrop
-        sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1, display: "flex", flexDirection: "column" })}
+        sx={(theme) => ({
+          color: "#fff",
+          zIndex: theme.zIndex.drawer + 1,
+          display: "flex",
+          flexDirection: "column",
+        })}
         open={open}
-        onClick={handleClose}
       >
         <CircularProgress color="inherit" />
         <Typography variant="h6" gutterBottom>
-            Loading... Please wait
+          Loading... Please wait
         </Typography>
-        <Button variant="contained" onClick={handleClose} color="inherit">
+        <Button variant="contained" onClick={handleCancel} color="inherit">
           Cancel
         </Button>
       </Backdrop>

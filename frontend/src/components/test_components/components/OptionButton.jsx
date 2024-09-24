@@ -62,6 +62,8 @@ export default function OptionButton({source}) {
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState("");
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [controller, setController] = React.useState(null);
+
   
   const fact_source = source;
   const source_url = source.sourceURL;
@@ -77,13 +79,20 @@ export default function OptionButton({source}) {
     window.open(source_url, "_blank", "noopener,noreferrer");
   };
 
-  console.log("soure: ", source);
+  const abordAnalysis = () => {
+    if (controller) {
+      controller.abort(); // Cancel the POST request
+      setController(null); // Reset the controller
+    }
+  }
 
   const handleValidate = async (event) => {
     event.preventDefault(); // Prevent default behavior if using a form
-    console.log("Analyse URL: ", source_url);
     setAnchorEl(null);
     setLoading(true);
+
+    const abortController = new AbortController(); // Create a new AbortController
+    setController(abortController); 
 
     try {
       const response = await fetch("http://localhost:3001/scrape", {
@@ -92,6 +101,7 @@ export default function OptionButton({source}) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ post_url: source_url }),
+        signal: abortController.signal, 
       });
 
       if (!response.ok) {
@@ -102,23 +112,29 @@ export default function OptionButton({source}) {
       }
 
       const data = await response.json();
-      console.log("Success:", data);
       setResult(data);
       setOpenDialog(true);
       setLoading(false);
       setEmpty(false);
     } catch (error) {
+      if (error.name === 'AbortError') {
+        console.log("POST request was cancelled.");
+        setAlertMessage("Analysis request was cancelled");
+        setAlert(true);
+        setLoading(false);
+      } else {
       console.error("Error:", error);
       setAlertMessage(error.message);
       setAlert(true);
       setLoading(false);
+      }
     }
   };
 
   return (
     <div>
       <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
-      {loading ? <LoadingBackdrop /> : null}
+      {loading ? <LoadingBackdrop abordAnalysis={abordAnalysis}/> : null}
       <Button
         id="customized-button"
         aria-controls={open ? "customized-menu" : undefined}

@@ -12,13 +12,23 @@ export default function SingleURLAnalysis() {
   const [result, setResult] = React.useState({});
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState("");
+  const [controller, setController] = React.useState(null);
 
   const analysisTypes = "Online Article";
 
+  const abordAnalysis = () => {
+    if (controller) {
+      controller.abort(); // Cancel the POST request
+      setController(null); // Reset the controller
+    }
+  }
+
   const onAnalyse = async (event) => {
     event.preventDefault(); // Prevent default behavior if using a form
-    console.log("Analyse URL: ", url);
     setLoading(true);
+
+    const abortController = new AbortController(); // Create a new AbortController
+    setController(abortController); 
 
     try {
       const response = await fetch("http://localhost:3001/scrape", {
@@ -27,6 +37,7 @@ export default function SingleURLAnalysis() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ post_url: url }),
+        signal: abortController.signal,
       });
 
       if (!response.ok) {
@@ -37,15 +48,21 @@ export default function SingleURLAnalysis() {
       }
 
       const data = await response.json();
-      console.log("Success:", data);
       setResult(data);
       setLoading(false);
       setEmpty(false);
     } catch (error) {
-      console.error("Error:", error);
-      setAlertMessage(error.message);
-      setAlert(true);
-      setLoading(false);
+      if (error.name === "AbortError") {
+        console.log("POST request was cancelled.");
+        setAlertMessage("Analysis request was cancelled");
+        setAlert(true);
+        setLoading(false);
+      } else {
+        console.error("Error:", error);
+        setAlertMessage(error.message);
+        setAlert(true);
+        setLoading(false);
+      }
     }
   };
 
@@ -53,7 +70,7 @@ export default function SingleURLAnalysis() {
     <div className="Single-Post">
       <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
       <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
-      {loading ? <LoadingBackdrop /> : null}
+      {loading ? <LoadingBackdrop abordAnalysis={abordAnalysis} /> : null}
       {empty ? (
         <EmptyAnalysis AnalysisTypes={analysisTypes} />
       ) : (
