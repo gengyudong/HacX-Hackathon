@@ -1,13 +1,26 @@
 const { getJson } = require("serpapi");
 // const { getRelevantTopSearches } = require('./azure');
 require('dotenv').config();
-// const { AzureOpenAI } = require("openai");
 
-// // Load API details for Azure OpenAI
-// const openAIendPoint = process.env["AZURE_OPENAI_ENDPOINT"];
-// const openAIapiKey = process.env["AZURE_OPENAI_API_KEY"];
-// const apiVersion = "2024-05-01-preview";
-// const openAIdeployment = "gpt-4o";
+function getCurrentDateString() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const day = String(now.getDate()).padStart(2, '0');
+
+    return `${year}${month}${day}`;
+}
+
+function getDateStringDaysAgo(daysAgo) {
+    const now = new Date();
+    now.setDate(now.getDate() - daysAgo); // Subtract the specified number of days
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+    const day = String(now.getDate()).padStart(2, '0');
+
+    return `${year}${month}${day}`;
+}
 
 // Google does not return real time trends for Singapore, doesn't work, 
 // but just leaving it here
