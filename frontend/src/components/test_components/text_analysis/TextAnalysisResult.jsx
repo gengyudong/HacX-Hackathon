@@ -10,7 +10,8 @@ import {
   TableRow,
 } from "@mui/material";
 import Link from "@mui/material/Link";
-// import testconstant from "../constants/testconstant";
+import OptionButton from "../components/OptionButton";
+import Box from "@mui/material/Box";
 
 function PostRow(props) {
   const { row } = props;
@@ -38,18 +39,52 @@ function AssertionRow(props) {
         </TableCell>
         <TableCell align="left">{row.assertion}</TableCell>
         <TableCell align="left">{row.factCheck}</TableCell>
-        <TableCell align="left">
-        {Array.isArray(row.source) && row.source.length > 0 ? (
-          row.source.map((link) => (
-            <Link key={link.sourceURL} href={link.sourceURL} target="_blank" rel="noopener noreferrer">
-              <p>{link.sourceName} <br /> Relevance score: {link.relevanceScore} </p> 
-          </Link>
-        ))
-        ) : (
-        <span>No sources available</span>
-        )}
-        </TableCell>    
+        <TableCell align="right">
+          {Array.isArray(row.source) && row.source.length > 0 ? (
+            row.source.map((link) => (
+              <Box>
+                {/* <Link
+                  key={link.sourceURL}
+                  href={link.sourceURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <p>
+                    {link.sourceName} <br /> Relevance score:{" "}
+                    {link.relevanceScore}{" "}
+                  </p>
+                </Link> */}
+                <OptionButton source={link} />
+              </Box>
+            ))
+          ) : (
+            <span>No sources available</span>
+          )}
+        </TableCell>
         <TableCell></TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
+}
+
+function RelatedRow(props) {
+  const { row } = props;
+  
+  return (
+    <React.Fragment>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+        <TableCell component="th" scope="row"></TableCell>
+        <TableCell align="left">{row.title}</TableCell>
+        <TableCell align="left">
+          <Link
+            key={row.link}
+            href={row.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {row.link}
+          </Link>
+        </TableCell>
       </TableRow>
     </React.Fragment>
   );
@@ -60,6 +95,7 @@ export default function AnalysisResult(result) {
   const query = result.result;  
   const postDetails = [query.postDetails];
   const postAssertions = query.jsonDisinformation;
+  const relatedPosts = query.similarResults;
 
     
     console.log("Query: ", query);
@@ -71,7 +107,12 @@ export default function AnalysisResult(result) {
         <Typography
           variant="h6"
           gutterBottom
-          sx={{ margin: "auto", width: "85%", marginTop: "25px" }}
+          sx={{
+            margin: "auto",
+            width: "90%",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
         >
           Post Details
         </Typography>
@@ -80,7 +121,6 @@ export default function AnalysisResult(result) {
             <TableHead>
               <TableRow>
                 <TableCell align="left">Post Title</TableCell>
-                <TableCell align="left">Date</TableCell>
                 <TableCell align="left">Author</TableCell>
                 <TableCell align="left">Platform</TableCell>
                 <TableCell />
@@ -96,7 +136,12 @@ export default function AnalysisResult(result) {
         <Typography
           variant="h6"
           gutterBottom
-          sx={{ margin: "auto", width: "85%", marginTop: "30px" }}
+          sx={{
+            margin: "auto",
+            width: "90%",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
         >
           Assertions Details
         </Typography>
@@ -114,6 +159,35 @@ export default function AnalysisResult(result) {
             <TableBody>
               {postAssertions.map((row, index) => (
                 <AssertionRow key={index} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Typography
+          variant="h6"
+          gutterBottom
+          sx={{
+            margin: "auto",
+            width: "90%",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          Similar Posts
+        </Typography>
+        <TableContainer component={Paper} sx={{ margin: "auto", width: "90%" }}>
+          <Table aria-label="table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left" />
+                <TableCell align="left">Post Title</TableCell>
+                <TableCell align="left">Post Link</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {relatedPosts.map((row, index) => (
+                <RelatedRow key={index} row={row} />
               ))}
             </TableBody>
           </Table>

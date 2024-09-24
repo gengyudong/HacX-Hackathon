@@ -48,6 +48,7 @@ function PageContent({ pathname }) {
   if (pathname === "/photoanalysis") {
     return <PhotoAnalysis />;
   }
+  
 }
 
 function DashboardLayoutBranding() {
