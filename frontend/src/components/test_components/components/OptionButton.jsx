@@ -57,7 +57,6 @@ export default function OptionButton({source}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [loading, setLoading] = React.useState(false);
-  const [empty, setEmpty] = React.useState(true);
   const [result, setResult] = React.useState({});
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState("");
@@ -115,7 +114,6 @@ export default function OptionButton({source}) {
       setResult(data);
       setOpenDialog(true);
       setLoading(false);
-      setEmpty(false);
     } catch (error) {
       if (error.name === 'AbortError') {
         console.log("POST request was cancelled.");
