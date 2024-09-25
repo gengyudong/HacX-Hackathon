@@ -10,6 +10,8 @@ import TextAnalysis from "./text_analysis/TextAnalysis";
 import PhotoAnalysis from "./photo_analysis/PhotoAnalysis";
 import VideoAnalysis from "./video_analysis/VideoAnalysis";
 import LandingPage from "./LandingPage";
+import WatchList from "./watchlist/WatchList";
+import ListIcon from "@mui/icons-material/LibraryBooks";
 
 const NAVIGATION = [
   {
@@ -26,6 +28,11 @@ const NAVIGATION = [
     segment: "videoanalysis",
     title: "Audio Analysis",
     icon: <VideoIcon />,
+  },
+  {
+    segment: "watchlist",
+    title: "User Watchlist",
+    icon: <ListIcon />,
   },
 ];
 
@@ -57,6 +64,9 @@ function PageContent({ pathname }) {
   }
   if (pathname === "/videoanalysis") {
     return <VideoAnalysis />;
+  }
+  if (pathname === "/watchlist") {
+    return <WatchList />
   }
   return <LandingPage />;
 }
