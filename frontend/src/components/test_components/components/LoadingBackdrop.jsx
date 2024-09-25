@@ -8,8 +8,8 @@ export default function LoadingBackdrop({ abordAnalysis }) {
   const [open, setOpen] = React.useState(true);
   
   const handleCancel = () => {
-    console.log("abosrt prop", abordAnalysis);
-    abordAnalysis();
+    console.log("abort prop", abordAnalysis);
+    abortAnalysis();
     setOpen(false);
   };
 

@@ -27,15 +27,16 @@ function PostRow(props) {
         <TableCell align="left">{row.post_title}</TableCell>
         <TableCell align="left">{row.date}</TableCell>
         <TableCell align="left">
-          <Box sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}>
-            {row.author}
-            <Divider orientation="vertical" flexItem />
-            <AddToWatchListButton />
-          </Box>
+        <Box sx={{
+          display: "flex",
+          flexDirection: "column", // Change to column to stack items
+          alignItems: "flex-start", // Align items to the start
+        }}>
+          <span>{row.author}</span>
+          <br></br>
+          <Divider orientation="horizontal" flexItem />
+          <AddToWatchListButton />
+        </Box>
         </TableCell>
         <TableCell align="left">{row.platform}</TableCell>
       </TableRow>
