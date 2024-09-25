@@ -172,4 +172,4 @@ function getFileNameByPath(path) {
 module.exports = mediaTranscribe;   
 
 // Call the audioDetection function
-// mediaTranscribe('./test.mp4');
+// mediaTranscribe('./public/lawrence.m4a');
