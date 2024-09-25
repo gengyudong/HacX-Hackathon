@@ -11,7 +11,7 @@ export default function EmptyAnalysis({AnalysisTypes}) {
         sx={{ mt: "200px" }}
         noWrap={true}
       >
-        Please enter a {AnalysisTypes} URL and click Analyse to start Analysing!
+        Please enter a {AnalysisTypes} and click Analyse to start Analysing!
       </Typography>
     </Box>
   );

@@ -175,7 +175,7 @@ export default function SingleURLAnalysis() {
   const [alertMessage, setAlertMessage] = React.useState("");
   const [controller, setController] = React.useState(null);
 
-  const analysisTypes = "Online Article";
+  const analysisTypes = "Online Article URL";
 
   const abortAnalysis = () => {
     if (controller) {

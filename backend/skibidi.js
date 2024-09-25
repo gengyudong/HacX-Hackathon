@@ -9,48 +9,35 @@ const { disinformationDetector, disinformationDetectorPic } = require('./functio
 const scrapeBody = require('./functions/scrapeAny');
 const { getTopSearchesAroundDate, getCurrentDateString } = require('./functions/googletrends');
 const mediaTranscribe = require('./functions/mediaTranscribe');
+const addEntryIfNotExists = require('./functions/saveAuthor');
 require('dotenv').config();
 
 const app = express();
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
-const { createObjectCsvWriter } = require('csv-writer');
 const jsonHelper = new jsonHelper1();
-
-// CSV Writer setup
-const csvWriter = createObjectCsvWriter({
-  path: 'authors_posts.csv', // Path where the CSV will be saved
-  header: [
-    { id: 'author', title: 'Author' },
-    { id: 'post_title', title: 'Post Title' },
-    { id: 'date', title: 'Date' },
-    { id: 'platform', title: 'Platform' },
-    { id: 'url', title: 'URL' }
-  ],
-  append: true // Append to the file if it already exists
-});
 
 // Endpoint to save author and post details
 app.post('/save-author', async (req, res) => {
   const { author, url } = req.body;
 
-  // Prepare data to be written to the CSV
-  const csvData = {
-    author: author,
-    url: url || '' // Include URL if available
+  const newEntry = {
+      author: author,
+      url: url || '' // Include URL if available
   };
 
-  // Write to CSV
   try {
-    await csvWriter.writeRecords([csvData]); // Writing records to CSV
-    console.log("Author and URL saved to CSV:", csvData);
-    res.status(200).send({ message: 'Author and URL saved successfully!' });
+      const result = await addEntryIfNotExists(newEntry);
+      if (result.success) {
+          res.status(200).send({ message: 'Author and URL saved successfully!' });
+      } else {
+          res.status(409).send({ message: result.message });
+      }
   } catch (error) {
-    console.error("Error writing to CSV:", error);
-    res.status(500).send({ message: 'Failed to save author and URL.' });
+      console.error("Error processing request:", error);
+      res.status(500).send({ message: 'Failed to save author and URL.' });
   }
 });
-
 // Other existing routes and logic
 
 app.post('/describe-image', async (req, res) => {
@@ -149,7 +136,7 @@ app.post('/topsearch', async (req, res) => {
 });
 
 app.post('/audio', async (req, res) => {
-  const audio_url = './public/test.mp4';
+  const audio_url = './public/lawrence.m4a';
   console.log('Audio URL:', audio_url);
   if (!audio_url) {
     return res.status(400).json({ error: 'Audio URL is required' });

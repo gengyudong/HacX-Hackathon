@@ -15,7 +15,7 @@ export default function SingleURLAnalysis() {
   const [alertMessage, setAlertMessage] = React.useState("");
   const [controller, setController] = React.useState(null);
 
-  const AnalysisTypes = "Photo";
+  const AnalysisTypes = "Photo URL";
 
   const abortAnalysis = () => {
     if (controller) {
