@@ -75,7 +75,7 @@ async function bodyTagExtractor(query) {
                         Your goal is to identity all of the assertions or comments made within the paragraphs. 
                         Return the output in JSON format 
                         {\"post_title\": \"Input post title you identify here\", \"author\": \"Input author you identify here\", \"date\": \"Input date you identify here\", \"platform\": \"Input platform you identify here\", \"assertion_1\": \"Input the assertion you identify here\"}. 
-                        Limit to 3 assertions. Just return the JSON will do, do not add anything before or after the output\n\n`;
+                        Limit to 5 assertions. Just return the JSON will do, do not add anything before or after the output\n\n`;
         const result = await client.chat.completions.create({
             messages: [
             { 

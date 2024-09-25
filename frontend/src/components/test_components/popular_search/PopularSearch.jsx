@@ -16,34 +16,34 @@ export default function PopularSearch() {
     const [loading, setLoading] = React.useState(false);
 
 
-    // const onLoad = async () => {
-    //     setLoading(true);
-    //     console.log("Fetching top searches");
-    //     try {
-    //         const response = await fetch("http://localhost:3001/topsearch", {
-    //           method: "POST",
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //           },
-    //           body: null,
-    //         });
-    //         if (!response.ok) {
-    //           setLoading(false);
-    //           throw new Error("Network response was not ok");
-    //         }
-    //         const data = await response.json();
-    //         console.log("Success:", data);
-    //         setResult(data);
-    //         setLoading(false);
-    //     } catch (error) {
-    //         console.error("Error:", error);
-    //         setLoading(false);
-    //     }
-    // }
+    const onLoad = async () => {
+        setLoading(true);
+        console.log("Fetching top searches");
+        try {
+            const response = await fetch("http://localhost:3001/topsearch", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: null,
+            });
+            if (!response.ok) {
+              setLoading(false);
+              throw new Error("Network response was not ok");
+            }
+            const data = await response.json();
+            console.log("Success:", data);
+            setResult(data);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error:", error);
+            setLoading(false);
+        }
+    }
 
-    // useEffect(() => {
-    //     onLoad();
-    //   }, []); 
+    useEffect(() => {
+        onLoad();
+      }, []); 
 
     return (
       <div>
