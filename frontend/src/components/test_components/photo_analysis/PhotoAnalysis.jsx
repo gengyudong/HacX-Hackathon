@@ -66,7 +66,7 @@ export default function SingleURLAnalysis() {
         setLoading(false);
       } else {
         console.error("Error:", error);
-        setAlertMessage(error.message);
+        setAlertMessage("Reason: " + error.message);
         setAlert(true);
         setLoading(false);
       }
