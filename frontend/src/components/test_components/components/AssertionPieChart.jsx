@@ -48,8 +48,8 @@ export default function AssertionChart({info}) {
             faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
           },
         ]}
-        height={220}
-        width={220}
+        height={300}
+        width={300}
         slotProps={{
           legend: {
             fontSize: 5,

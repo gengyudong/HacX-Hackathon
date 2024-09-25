@@ -175,7 +175,7 @@ export default function SingleURLAnalysis() {
   const [alertMessage, setAlertMessage] = React.useState("");
   const [controller, setController] = React.useState(null);
 
-  const analysisTypes = "Online Article URL";
+  const analysisTypes = "Online Article";
 
   const abortAnalysis = () => {
     if (controller) {
@@ -233,7 +233,7 @@ export default function SingleURLAnalysis() {
       <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
       {loading ? <LoadingBackdrop abortAnalysis={abortAnalysis} /> : null}
       {empty ? (
-        <EmptyAnalysis AnalysisTypes={analysisTypes} />
+        <EmptyAnalysis message={EmptyMessage} />
       ) : (
         <TextAnalysisResult result={result} />
       )}

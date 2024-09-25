@@ -19,9 +19,9 @@ export default function FileInputBar({ onAnalyse, setFile }) {
                     p: "2px 4px",
                     display: "flex",
                     alignItems: "center",
-                    width: "90%",
+                    width: "40%",
                     margin: "auto",
-                    marginTop: "20px",
+                    marginTop: "50px",
                 }}
             >
                 <input

@@ -15,7 +15,8 @@ export default function SingleURLAnalysis() {
   const [alertMessage, setAlertMessage] = React.useState("");
   const [controller, setController] = React.useState(null);
 
-  const AnalysisTypes = "Video";
+  const emptyMessage =
+    "Please upload an Audio and click Analyse to start Analysing!";
 
   const abortAnalysis = () => {
     if (controller) {
@@ -81,7 +82,7 @@ export default function SingleURLAnalysis() {
       <FileInputBar onAnalyse={onAnalyse} setFile={setFile} url={file} />
       {loading ? <LoadingBackdrop abortAnalysis={abortAnalysis}/> : null}
       {empty ? (
-        <EmptyAnalysis AnalysisTypes={AnalysisTypes} />
+        <EmptyAnalysis message={emptyMessage} />
       ) : (
         <VideoAnalysisResult result={result} imageURL={file} />
       )}
