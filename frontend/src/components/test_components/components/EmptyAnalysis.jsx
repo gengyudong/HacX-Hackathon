@@ -11,7 +11,7 @@ export default function EmptyAnalysis({message}) {
         sx={{ mt: "200px" }}
         noWrap={true}
       >
-        Please enter a {AnalysisTypes} URL and click Analyse to start Analysing!
+        {message}
       </Typography>
     </Box>
   );
