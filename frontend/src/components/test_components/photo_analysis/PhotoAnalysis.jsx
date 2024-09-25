@@ -13,19 +13,34 @@ export default function SingleURLAnalysis() {
   const [result, setResult] = React.useState({});
   const [alert, setAlert] = React.useState(false);
   const [alertMessage, setAlertMessage] = React.useState("");
+  const [controller, setController] = React.useState(null);
 
   const AnalysisTypes = "Photo";
+
+  const abortAnalysis = () => {
+    if (controller) {
+      controller.abort(); // Cancel the POST request
+      setController(null); // Reset the controller
+    }
+  };
 
   const onAnalyse = async (event) => {
     event.preventDefault(); // Prevent default behavior if using a form
     console.log("Analyse URL: ", url);
     setLoading(true);
 
+    const newController = new AbortController();
+    setController(newController);
+    const signal = newController.signal;
+
     try {
       const response = await axios.post(
         "http://localhost:3001/describe-image",
         {
           image_url: url,
+        },
+        {
+          signal: signal,
         }
       );
 
@@ -44,8 +59,17 @@ export default function SingleURLAnalysis() {
       setLoading(false);
       setEmpty(false);
     } catch (error) {
-      console.error("Error:", error);
-      setLoading(false);
+      if (error.message === "AbortError") {
+        console.log("POST request was cancelled.");
+        setAlertMessage("Analysis request was cancelled");
+        setAlert(true);
+        setLoading(false);
+      } else {
+        console.error("Error:", error);
+        setAlertMessage(error.message);
+        setAlert(true);
+        setLoading(false);
+      }
     }
   };
 
@@ -53,7 +77,7 @@ export default function SingleURLAnalysis() {
     <div className="Single-Post">
       <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
       <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
-      {loading ? <LoadingBackdrop /> : null}
+      {loading ? <LoadingBackdrop abortAnalysis={abortAnalysis} /> : null}
       {empty ? (
         <EmptyAnalysis AnalysisTypes={AnalysisTypes} />
       ) : (

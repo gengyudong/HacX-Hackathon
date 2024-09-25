@@ -16,7 +16,6 @@ import AssertionChart from "../components/AssertionPieChart";
 import AttributionGraph from "./AttributionGraph";
 import Divider from "@mui/material/Divider";
 import AddToWatchListButton from "../components/AddToWatchListButton";
-import { spacing } from "@mui/system";
 
 function PostRow(props) {
   const { row } = props;

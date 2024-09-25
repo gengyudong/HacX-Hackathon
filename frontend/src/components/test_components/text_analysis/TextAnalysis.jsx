@@ -177,7 +177,7 @@ export default function SingleURLAnalysis() {
 
   const analysisTypes = "Online Article";
 
-  const abordAnalysis = () => {
+  const abortAnalysis = () => {
     if (controller) {
       controller.abort(); // Cancel the POST request
       setController(null); // Reset the controller
@@ -231,7 +231,7 @@ export default function SingleURLAnalysis() {
     <div className="Single-Post">
       <AlertDialog message={alertMessage} open={alert} setOpen={setAlert} />
       <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
-      {loading ? <LoadingBackdrop abordAnalysis={abordAnalysis} /> : null}
+      {loading ? <LoadingBackdrop abortAnalysis={abortAnalysis} /> : null}
       {empty ? (
         <EmptyAnalysis AnalysisTypes={analysisTypes} />
       ) : (
