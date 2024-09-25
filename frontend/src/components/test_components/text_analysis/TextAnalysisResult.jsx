@@ -12,6 +12,7 @@ import {
 import Link from "@mui/material/Link";
 import OptionButton from "../components/OptionButton";
 import Box from "@mui/material/Box";
+import AssertionChart from "../components/AssertionPieChart";
 
 function PostRow(props) {
   const { row } = props;
@@ -100,36 +101,63 @@ export default function AnalysisResult(result) {
     
     return (
       <div>
-        <Typography
-          variant="h6"
-          gutterBottom
-          sx={{
-            margin: "auto",
-            width: "90%",
-            marginTop: "20px",
-            marginBottom: "20px",
-          }}
-        >
-          Post Details
-        </Typography>
-        <TableContainer component={Paper} sx={{ margin: "auto", width: "90%" }}>
-          <Table aria-label="table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Post Title</TableCell>
-                <TableCell align="left">Date</TableCell>
-                <TableCell align="left">Author/Username</TableCell>
-                <TableCell align="left">Platform</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {postDetails.map((row, index) => (
-                <PostRow key={index} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              margin: "auto",
+              width: "90%",
+              marginTop: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            Post Summary
+          </Typography>
+          <TableContainer
+            component={Paper}
+            sx={{
+              margin: "auto",
+              width: "90%",
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            {/* First table: 75% width */}
+            <Table aria-label="table" sx={{ width: "75%" }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">Post Title</TableCell>
+                  <TableCell align="left">Date</TableCell>
+                  <TableCell align="left">Author/Username</TableCell>
+                  <TableCell align="left">Platform</TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {postDetails.map((row, index) => (
+                  <PostRow key={index} row={row} />
+                ))}
+              </TableBody>
+            </Table>
+
+            {/* Second table: 25% width */}
+            <Table aria-label="table" sx={{ width: "25%" }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">Assertion Breakdown</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <AssertionChart info={postAssertions} />
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
         <Typography
           variant="h6"
           gutterBottom
