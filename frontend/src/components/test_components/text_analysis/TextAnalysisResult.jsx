@@ -13,6 +13,8 @@ import Link from "@mui/material/Link";
 import OptionButton from "../components/OptionButton";
 import Box from "@mui/material/Box";
 import AssertionChart from "../components/AssertionPieChart";
+import AttributionGraph from "./AttributionGraph";
+import Divider from "@mui/material/Divider";
 
 function PostRow(props) {
   const { row } = props;
@@ -126,7 +128,11 @@ export default function AnalysisResult(result) {
             {/* First table: 75% width */}
             <Table aria-label="table" sx={{ width: "75%" }}>
               <TableHead>
-                <TableRow>
+                <TableRow
+                  sx={{
+                    backgroundColor: "#80d8ff", // set the background color
+                  }}
+                >
                   <TableCell align="left">Post Title</TableCell>
                   <TableCell align="left">Date</TableCell>
                   <TableCell align="left">Author/Username</TableCell>
@@ -143,7 +149,11 @@ export default function AnalysisResult(result) {
 
             {/* Second table: 25% width */}
             <Table aria-label="table" sx={{ width: "25%" }}>
-              <TableHead>
+              <TableHead
+                sx={{
+                  backgroundColor: "#80d8ff", // set the background color
+                }}
+              >
                 <TableRow>
                   <TableCell align="left">Assertion Breakdown</TableCell>
                 </TableRow>
@@ -158,65 +168,85 @@ export default function AnalysisResult(result) {
             </Table>
           </TableContainer>
         </Box>
-        <Typography
-          variant="h6"
-          gutterBottom
-          sx={{
-            margin: "auto",
-            width: "90%",
-            marginTop: "20px",
-            marginBottom: "20px",
-          }}
-        >
-          Assertions Details
-        </Typography>
-        <TableContainer component={Paper} sx={{ margin: "auto", width: "90%" }}>
-          <Table aria-label="table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">No.</TableCell>
-                <TableCell align="left">Assertions</TableCell>
-                <TableCell align="left">Fact Check</TableCell>
-                <TableCell align="left">Supporting Sources</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {postAssertions.map((row, index) => (
-                <AssertionRow key={index} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Typography
-          variant="h6"
-          gutterBottom
-          sx={{
-            margin: "auto",
-            width: "90%",
-            marginTop: "20px",
-            marginBottom: "20px",
-          }}
-        >
-          Similar Posts
-        </Typography>
-        <TableContainer component={Paper} sx={{ margin: "auto", width: "90%" }}>
-          <Table aria-label="table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left" />
-                <TableCell align="left">Post Title</TableCell>
-                <TableCell align="left">Post Link</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {relatedPosts.map((row, index) => (
-                <RelatedRow key={index} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              margin: "auto",
+              width: "90%",
+              marginTop: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            <Typography variant="h6">Assertions Details</Typography>
+            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <AttributionGraph />
+          </Box>
+          <TableContainer
+            component={Paper}
+            sx={{ margin: "auto", width: "90%" }}
+          >
+            <Table aria-label="table">
+              <TableHead>
+                <TableRow
+                  sx={{
+                    backgroundColor: "#80d8ff", // set the background color
+                  }}
+                >
+                  <TableCell align="left">No.</TableCell>
+                  <TableCell align="left">Assertions</TableCell>
+                  <TableCell align="left">Fact Check</TableCell>
+                  <TableCell align="left">Supporting Sources</TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {postAssertions.map((row, index) => (
+                  <AssertionRow key={index} row={row} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+        <Box>
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{
+              margin: "auto",
+              width: "90%",
+              marginTop: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            Similar Posts
+          </Typography>
+          <TableContainer
+            component={Paper}
+            sx={{ margin: "auto", width: "90%" }}
+          >
+            <Table aria-label="table">
+              <TableHead>
+                <TableRow
+                  sx={{
+                    backgroundColor: "#80d8ff", // set the background color
+                  }}
+                >
+                  <TableCell align="left" />
+                  <TableCell align="left">Post Title</TableCell>
+                  <TableCell align="left">Post Link</TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {relatedPosts.map((row, index) => (
+                  <RelatedRow key={index} row={row} />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </div>
     );
 }
