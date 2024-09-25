@@ -26,16 +26,16 @@ function PostRow(props) {
         <TableCell align="left">{row.post_title}</TableCell>
         <TableCell align="left">{row.date}</TableCell>
         <TableCell align="left">
-        <Box sx={{
-          display: "flex",
-          flexDirection: "column", // Change to column to stack items
-          alignItems: "flex-start", // Align items to the start
-        }}>
-          <span>{row.author}</span>
-          <br></br>
-          <Divider orientation="horizontal" flexItem />
-          <AddToWatchListButton />
-        </Box>
+          <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}>
+            <span>{row.author}</span>
+            <br />
+            <Divider orientation="horizontal" flexItem />
+            <AddToWatchListButton author={row.author} url={`https://www.reddit.com/user/${row.author}`} />
+          </Box>
         </TableCell>
         <TableCell align="left">{row.platform}</TableCell>
       </TableRow>
@@ -57,18 +57,7 @@ function AssertionRow(props) {
         <TableCell align="right">
           {Array.isArray(row.source) && row.source.length > 0 ? (
             row.source.map((link, index) => (
-              <Box>
-                {/* <Link
-                  key={link.sourceURL}
-                  href={link.sourceURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <p>
-                    {link.sourceName} <br /> Relevance score:{" "}
-                    {link.relevanceScore}{" "}
-                  </p>
-                </Link> */}
+              <Box key={index}>
                 <OptionButton source={link} />
               </Box>
             ))
@@ -106,163 +95,140 @@ function RelatedRow(props) {
 }
 
 export default function AnalysisResult(result) {
-
   const query = result.result;  
-  const postDetails = [query.postDetails];
+  const postDetails = query.postDetails; // Accessing postDetails directly
   const postAssertions = query.jsonDisinformation;
   const relatedPosts = query.similarResults;
   console.log(query);
     
-    return (
-      <div>
-        <Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              margin: "auto",
-              width: "90%",
-              marginTop: "20px",
-              marginBottom: "20px",
-            }}
-          >
-            <Typography
-              variant="h6"
-            >
-              Post Summary
-            </Typography>
-          </Box>
-          <TableContainer
-            component={Paper}
-            sx={{
-              margin: "auto",
-              width: "90%",
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            {/* First table: 75% width */}
-            <Table aria-label="table" sx={{ width: "75%" }}>
-              <TableHead>
-                <TableRow
-                  sx={{
-                    backgroundColor: "#80d8ff", // set the background color
-                  }}
-                >
-                  <TableCell align="left">Post Title</TableCell>
-                  <TableCell align="left">Date</TableCell>
-                  <TableCell align="left">Author/Username</TableCell>
-                  <TableCell align="left">Platform</TableCell>
-                  <TableCell />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {postDetails.map((row, index) => (
-                  <PostRow key={index} row={row} />
-                ))}
-              </TableBody>
-            </Table>
-
-            {/* Second table: 25% width */}
-            <Table aria-label="table" sx={{ width: "25%" }}>
-              <TableHead
-                sx={{
-                  backgroundColor: "#80d8ff", // set the background color
-                }}
-              >
-                <TableRow>
-                  <TableCell align="left">Assertion Breakdown</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <AssertionChart info={postAssertions} />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        <Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              margin: "auto",
-              width: "90%",
-              marginTop: "20px",
-              marginBottom: "20px",
-            }}
-          >
-            <Typography variant="h6">Assertions Details</Typography>
-            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-            <AttributionGraph />
-          </Box>
-          <TableContainer
-            component={Paper}
-            sx={{ margin: "auto", width: "90%" }}
-          >
-            <Table aria-label="table">
-              <TableHead>
-                <TableRow
-                  sx={{
-                    backgroundColor: "#80d8ff", // set the background color
-                  }}
-                >
-                  <TableCell align="left">No.</TableCell>
-                  <TableCell align="left">Assertions</TableCell>
-                  <TableCell align="left">Fact Check</TableCell>
-                  <TableCell align="left">Supporting Sources</TableCell>
-                  <TableCell />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {postAssertions.map((row, index) => (
-                  <AssertionRow key={index} row={row} />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-        <Box>
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              margin: "auto",
-              width: "90%",
-              marginTop: "20px",
-              marginBottom: "20px",
-            }}
-          >
-            Similar Posts
+  return (
+    <div>
+      <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            margin: "auto",
+            width: "90%",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          <Typography variant="h6">
+            Post Summary
           </Typography>
-          <TableContainer
-            component={Paper}
-            sx={{ margin: "auto", width: "90%" }}
-          >
-            <Table aria-label="table">
-              <TableHead>
-                <TableRow
-                  sx={{
-                    backgroundColor: "#80d8ff", // set the background color
-                  }}
-                >
-                  <TableCell align="left" />
-                  <TableCell align="left">Post Title</TableCell>
-                  <TableCell align="left">Post Link</TableCell>
-                  <TableCell />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {relatedPosts.map((row, index) => (
-                  <RelatedRow key={index} row={row} />
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
         </Box>
-      </div>
-    );
+        <TableContainer
+          component={Paper}
+          sx={{
+            margin: "auto",
+            width: "90%",
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <Table aria-label="table" sx={{ width: "75%" }}>
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#80d8ff" }}>
+                <TableCell align="left">Post Title</TableCell>
+                <TableCell align="left">Date</TableCell>
+                <TableCell align="left">Author/Username</TableCell>
+                <TableCell align="left">Platform</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <PostRow row={postDetails} />
+            </TableBody>
+          </Table>
+
+          <Table aria-label="table" sx={{ width: "25%" }}>
+            <TableHead sx={{ backgroundColor: "#80d8ff" }}>
+              <TableRow>
+                <TableCell align="left">Assertion Breakdown</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <AssertionChart info={postAssertions} />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+      <Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            margin: "auto",
+            width: "90%",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          <Typography variant="h6">Assertions Details</Typography>
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <AttributionGraph />
+        </Box>
+        <TableContainer
+          component={Paper}
+          sx={{ margin: "auto", width: "90%" }}
+        >
+          <Table aria-label="table">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#80d8ff" }}>
+                <TableCell align="left">No.</TableCell>
+                <TableCell align="left">Assertions</TableCell>
+                <TableCell align="left">Fact Check</TableCell>
+                <TableCell align="left">Supporting Sources</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {postAssertions.map((row, index) => (
+                <AssertionRow key={index} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+      <Box>
+        <Typography
+          variant="h6"
+          gutterBottom
+          sx={{
+            margin: "auto",
+            width: "90%",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          Similar Posts
+        </Typography>
+        <TableContainer
+          component={Paper}
+          sx={{ margin: "auto", width: "90%" }}
+        >
+          <Table aria-label="table">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: "#80d8ff" }}>
+                <TableCell align="left" />
+                <TableCell align="left">Post Title</TableCell>
+                <TableCell align="left">Post Link</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {relatedPosts.map((row, index) => (
+                <RelatedRow key={index} row={row} />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </div>
+  );
 }
