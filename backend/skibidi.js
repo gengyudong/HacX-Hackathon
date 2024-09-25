@@ -1,11 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fs = require('fs');
 const jsonHelper1 = require('./tools/jsonHelper');
 const fetchSearchResults = require('./functions/googlesearch');
 const { assertionExtractor, askAzureAboutImage, getRelevantTopSearches } = require('./functions/azure');
 const { disinformationDetector, disinformationDetectorPic } = require('./functions/tavily');
-const scrapeBody = require('./functions/scrapeany');
+const scrapeBody = require('./functions/scrapeAny');
 const { getTopSearchesAroundDate, getCurrentDateString } = require('./functions/googletrends');
 const mediaTranscribe = require('./functions/mediaTranscribe');
 require('dotenv').config();
@@ -13,8 +14,44 @@ require('dotenv').config();
 const app = express();
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json()); // Middleware to parse JSON bodies
-
+const { createObjectCsvWriter } = require('csv-writer');
 const jsonHelper = new jsonHelper1();
+
+// CSV Writer setup
+const csvWriter = createObjectCsvWriter({
+  path: 'authors_posts.csv', // Path where the CSV will be saved
+  header: [
+    { id: 'author', title: 'Author' },
+    { id: 'post_title', title: 'Post Title' },
+    { id: 'date', title: 'Date' },
+    { id: 'platform', title: 'Platform' },
+    { id: 'url', title: 'URL' }
+  ],
+  append: true // Append to the file if it already exists
+});
+
+// Endpoint to save author and post details
+app.post('/save-author', async (req, res) => {
+  const { author, url } = req.body;
+
+  // Prepare data to be written to the CSV
+  const csvData = {
+    author: author,
+    url: url || '' // Include URL if available
+  };
+
+  // Write to CSV
+  try {
+    await csvWriter.writeRecords([csvData]); // Writing records to CSV
+    console.log("Author and URL saved to CSV:", csvData);
+    res.status(200).send({ message: 'Author and URL saved successfully!' });
+  } catch (error) {
+    console.error("Error writing to CSV:", error);
+    res.status(500).send({ message: 'Failed to save author and URL.' });
+  }
+});
+
+// Other existing routes and logic
 
 app.post('/describe-image', async (req, res) => {
   const { image_url } = req.body;
@@ -78,13 +115,13 @@ app.post('/scrape', async (req, res) => {
     author: parsedResults.author,
     date: parsedResults.date,
     platform: parsedResults.platform
-};
+  };
 
-// Extract assertions
+  // Extract assertions
   const assertions = {
-      assertion_1: parsedResults.assertion_1,
-      assertion_2: parsedResults.assertion_2,
-      assertion_3: parsedResults.assertion_3
+    assertion_1: parsedResults.assertion_1,
+    assertion_2: parsedResults.assertion_2,
+    assertion_3: parsedResults.assertion_3
   };
 
   const searchQueryGoogle = `${postDetails.post_title}`;
@@ -128,43 +165,9 @@ app.post('/audio', async (req, res) => {
   console.log('Disinformation result:', jsonDisinformation);
   const result = { parsedResults, jsonDisinformation };
   res.status(200).json(result);
-
 });
 
 // Start the server
 app.listen(3001, () => {
   console.log('Server running on http://localhost:3001');
 });
-
-// app.post('/redditscrape', async (req, res) => {
-//   const { post_url } = req.body;
-
-//   if (!post_url) {
-//       return res.status(400).json({ error: 'No post URL provided' });
-//   }
-
-//   const postDetails = await fetchRedditPostDetails(post_url);
-
-//   if (!postDetails) {
-//       return res.status(500).json({ error: 'Failed to scrape the post' });
-//   }
-
-//   const searchQueryGoogle = `${postDetails.post_title}`;
-//   const searchQuery = `${postDetails.post_title} ${postDetails.paragraph_texts.join(' ')}`;
-//   const searchResults = await fetchSearchResults(searchQueryGoogle);
-//   const assertionResult = await assertionExtractor(searchQuery);
-//   const cleanAssertion = jsonHelper.cleanChatGPTJSONString(assertionResult);   
-//   const parsedAssertion = jsonHelper.parseChatGPTJSONString(cleanAssertion);
-
-//   const disinformationResult = await disinformationDetector(parsedAssertion);
-//   const jsonData = JSON.stringify(disinformationResult, null, 2);
-//   const jsonDisinformation = JSON.parse(jsonData);
-
-//   const similarResults = searchResults.organic_results.slice(1, 6).map(result => ({
-//     title: result.title,
-//     link: result.link,
-//   }));
-  
-//   const result = { postDetails, similarResults, jsonDisinformation };
-//   res.status(200).json(result);
-// });
