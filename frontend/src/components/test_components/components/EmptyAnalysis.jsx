@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 
-export default function EmptyAnalysis({AnalysisTypes}) {
+export default function EmptyAnalysis({message}) {
   return (
     <Box xs={{ display: "flex" }}>
       <Typography
@@ -11,7 +11,7 @@ export default function EmptyAnalysis({AnalysisTypes}) {
         sx={{ mt: "200px" }}
         noWrap={true}
       >
-        Please enter a {AnalysisTypes} URL and click Analyse to start Analysing!
+        {message}
       </Typography>
     </Box>
   );

@@ -15,7 +15,7 @@ export default function SingleURLAnalysis() {
   const [alertMessage, setAlertMessage] = React.useState("");
   const [controller, setController] = React.useState(null);
 
-  const AnalysisTypes = "Photo";
+  const EmptyMessage = "Please enter a Image URL and click Analyse to start Analysing!";
 
   const abortAnalysis = () => {
     if (controller) {
@@ -79,7 +79,7 @@ export default function SingleURLAnalysis() {
       <URLInputBar onAnalyse={onAnalyse} inputUrl={setUrl} url={url} />
       {loading ? <LoadingBackdrop abortAnalysis={abortAnalysis} /> : null}
       {empty ? (
-        <EmptyAnalysis AnalysisTypes={AnalysisTypes} />
+        <EmptyAnalysis message={EmptyMessage} />
       ) : (
         <PhotoAnalysisResult result={result} imageURL={url} />
       )}
