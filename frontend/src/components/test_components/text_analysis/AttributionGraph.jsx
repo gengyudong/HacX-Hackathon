@@ -33,6 +33,7 @@ import { GraphCanvas, darkTheme } from "reagraph";
 import { generateGraphData } from "./GraphData";
 import GraphIcon from "@mui/icons-material/BubbleChart";
 import Typography from '@mui/material/Typography';
+import AddToWatchListButton from '../components/AddToWatchListButton';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -78,6 +79,7 @@ export default function AttributionGraph() {
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
               Attribution Graph
             </Typography>
+            <AddToWatchListButton />
           </Toolbar>
         </AppBar>
         <GraphCanvas

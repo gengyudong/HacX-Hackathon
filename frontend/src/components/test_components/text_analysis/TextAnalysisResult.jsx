@@ -15,6 +15,8 @@ import Box from "@mui/material/Box";
 import AssertionChart from "../components/AssertionPieChart";
 import AttributionGraph from "./AttributionGraph";
 import Divider from "@mui/material/Divider";
+import AddToWatchListButton from "../components/AddToWatchListButton";
+import { spacing } from "@mui/system";
 
 function PostRow(props) {
   const { row } = props;
@@ -24,7 +26,17 @@ function PostRow(props) {
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell align="left">{row.post_title}</TableCell>
         <TableCell align="left">{row.date}</TableCell>
-        <TableCell align="left">{row.author}</TableCell>
+        <TableCell align="left">
+          <Box sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}>
+            {row.author}
+            <Divider orientation="vertical" flexItem />
+            <AddToWatchListButton />
+          </Box>
+        </TableCell>
         <TableCell align="left">{row.platform}</TableCell>
       </TableRow>
     </React.Fragment>
@@ -104,18 +116,22 @@ export default function AnalysisResult(result) {
     return (
       <div>
         <Box>
-          <Typography
-            variant="h6"
-            gutterBottom
+          <Box
             sx={{
+              display: "flex",
+              flexDirection: "row",
               margin: "auto",
               width: "90%",
               marginTop: "20px",
               marginBottom: "20px",
             }}
           >
-            Post Summary
-          </Typography>
+            <Typography
+              variant="h6"
+            >
+              Post Summary
+            </Typography>
+          </Box>
           <TableContainer
             component={Paper}
             sx={{
