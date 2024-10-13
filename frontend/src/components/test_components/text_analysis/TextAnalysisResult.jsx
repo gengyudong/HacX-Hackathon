@@ -34,7 +34,7 @@ function PostRow(props) {
             <span>{row.author}</span>
             <br />
             <Divider orientation="horizontal" flexItem />
-            <AddToWatchListButton author={row.author} url={`https://www.reddit.com/user/${row.author}`} />
+            <AddToWatchListButton author={row.author}/>
           </Box>
         </TableCell>
         <TableCell align="left">{row.platform}</TableCell>

@@ -19,11 +19,10 @@ const jsonHelper = new jsonHelper1();
 
 // Endpoint to save author and post details
 app.post('/save-author', async (req, res) => {
-  const { author, url } = req.body;
+  const { author } = req.body;
 
   const newEntry = {
-      author: author,
-      url: url || '' // Include URL if available
+      author: author// Include URL if available
   };
 
   try {

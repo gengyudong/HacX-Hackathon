@@ -25,8 +25,7 @@ async function addEntryIfNotExists(newEntry) {
 
     // Check for duplicates
     const existingEntryIndex = existingEntries.findIndex(entry => 
-        entry.author.trim().toLowerCase() === newEntry.author.trim().toLowerCase() &&
-        entry.url.trim() === newEntry.url.trim()
+        entry.author.trim().toLowerCase() === newEntry.author.trim().toLowerCase()
     );
 
     if (existingEntryIndex === -1) {

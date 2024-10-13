@@ -3,17 +3,17 @@ import axios from "axios";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 
-export default function AddToWatchListButton({ author, url }) {
+export default function AddToWatchListButton({ author }) {
   const handleClick = async () => {
     try {
       // Check if author and URL are defined
-      if (!author || !url) {
+      if (!author) {
         console.error("Author or URL are undefined");
         return;
       }
 
       // Prepare data to send to the backend
-      const data = { author, url };
+      const data = { author };
       console.log("Data being sent to backend:", data);
 
       // Send the data to the backend
