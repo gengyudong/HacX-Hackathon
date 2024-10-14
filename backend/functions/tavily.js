@@ -23,8 +23,8 @@ async function disinformationDetector(query) {
                 "include_image_descriptions": false,
                 "include_raw_content": false,
                 "max_results": 20,
-                "include_domains": [],
-                "exclude_domains": []
+                "include_domains": ["straitstimes.com", "bloomberg.com", "apnews.com", "bbc.com", "economist.com", "reuters.com", "washingtonpost.com", "wsj.com", "gov.sg", "channelnewsasia.com", "ft.com", "mothership.sg", "statista.com", "who.int", "who.org"],
+                "exclude_domains": ["wikipedia.com", "facebook.com"]
             })  
             console.log(decision)
             let resultArray = [];
