@@ -6,7 +6,7 @@ import { Container } from "react-bootstrap";
 import Legend from "./Legend";
 import NodeDetails from "./NodeDetails";
 import { Grid } from "@mui/material";
-import { padding } from "@mui/system";
+import { padding, textAlign } from "@mui/system";
 
 const NetworkGraph = () => {
 
@@ -40,8 +40,8 @@ const NetworkGraph = () => {
   return (
     <Container sx={{ height: "100vh" }}>
       <Grid container sx={{ height: "100%" }}>
-        <Grid item xs={10} sx={{ padding: 2 }}>
-          <h1 sx={{ display: "flex"}}>X Network Graph</h1>
+        <Grid item xs={10} sx={{ padding: 2}}>
+          <h1>X Network Graph</h1>
           <ForceGraph2D
             graphData={data}
             autoPauseRedraw={false}
@@ -52,6 +52,7 @@ const NetworkGraph = () => {
             linkDirectionalParticleWidth={(d) => 3}
             onNodeClick={handleNodeClick}
             nodeRelSize={4}
+            nodeVal={(d) => d.influence / 400}
           />
         </Grid>
         <Grid
