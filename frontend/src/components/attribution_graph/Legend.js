@@ -8,7 +8,7 @@ const colourMapping = {
   India: "pink",
   Japan: "brown",
   Malaysia: "red",
-  "Brazil:": "grey",
+  "Brazil:": "lightblue",
 };
 
 const Legend = () => {

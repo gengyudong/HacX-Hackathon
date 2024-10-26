@@ -20,7 +20,7 @@ const NetworkGraph = () => {
     "India": "pink",
     "Japan": "brown",
     "Malaysia": "red",
-    "Brazil:": "grey",
+    "Brazil:": "lightblue",
   }
 
     const data = {
