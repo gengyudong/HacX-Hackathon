@@ -28,3 +28,23 @@
 ## 💻 Installation & Setup  
 
 ### 1️⃣ Clone the Repository  
+```
+git clone https://github.com/your-username/HacX-Hackathon.git
+```
+
+### 2️⃣ Backend Setup (Express.js)
+```
+cd backend
+npm install
+node skibidi.js  # Start the backend server
+```
+
+### 3️⃣ Frontend Setup (React.js)
+```
+cd frontend
+npm install
+npm start  # Start the React app
+```
+
+
+
